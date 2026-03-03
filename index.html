@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXANI-II · Comprensión Lectora (Simulador oficial)</title>
+    <title>EXANI-II · Comprensión Lectora (modo examen real)</title>
     <style>
         * {
             margin: 0;
@@ -11,58 +11,70 @@
             box-sizing: border-box;
             font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
+
         body {
-            background: #e9eef4;
-            padding: 20px;
+            background: #e5ecf5;
+            padding: 25px 20px;
             display: flex;
             justify-content: center;
         }
+
         .simulador {
             max-width: 1100px;
             width: 100%;
             background: white;
             border-radius: 40px;
-            box-shadow: 0 30px 50px rgba(0, 20, 50, 0.3);
+            box-shadow: 0 30px 50px rgba(0, 20, 50, 0.25);
             overflow: hidden;
         }
+
         .cabecera {
             background: #0a2c3d;
             color: white;
-            padding: 30px;
+            padding: 28px 30px;
             text-align: center;
             border-bottom: 5px solid #f9a826;
         }
+
         .cabecera h1 {
-            font-size: 2.4rem;
+            font-size: 2.3rem;
             font-weight: 700;
         }
+
         .cabecera p {
             font-size: 1.2rem;
             opacity: 0.9;
-            margin-top: 10px;
+            margin-top: 8px;
         }
+
         .contenido {
             padding: 30px 35px;
         }
+
+        /* Barra de progreso */
         .progreso {
-            background: #e0e6f0;
+            background: #dae0ec;
             height: 16px;
             border-radius: 50px;
             margin-bottom: 25px;
             overflow: hidden;
         }
+
         .barra-progreso {
             background: #f9a826;
             height: 100%;
             width: 0%;
-            transition: width 0.3s;
+            transition: width 0.2s;
         }
+
+        /* Navegación entre lecturas */
         .nav-lectura {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 20px;
         }
+
         .badge-lectura {
             background: #0a2c3d;
             color: white;
@@ -72,10 +84,12 @@
             font-weight: 600;
             border: 1px solid #f9a826;
         }
+
         .nav-botones {
             display: flex;
             gap: 15px;
         }
+
         .btn-nav {
             background: white;
             border: 2px solid #0a2c3d;
@@ -86,52 +100,62 @@
             cursor: pointer;
             font-size: 1rem;
         }
+
         .btn-nav:disabled {
             opacity: 0.4;
             cursor: not-allowed;
         }
+
         .btn-nav:hover:not(:disabled) {
             background: #0a2c3d;
             color: white;
         }
+
+        /* Tarjeta de lectura */
         .tarjeta-lectura {
-            background: #f5f9ff;
+            background: #f6faff;
             border-radius: 30px;
             padding: 30px;
-            border: 1px solid #cbd6e8;
+            border: 1px solid #c7d3e8;
             margin-bottom: 25px;
         }
+
         .titulo-lectura {
-            font-size: 1.9rem;
+            font-size: 2rem;
             color: #0a2c3d;
             font-weight: 700;
             border-left: 8px solid #f9a826;
             padding-left: 20px;
-            margin-bottom: 5px;
+            margin-bottom: 8px;
         }
+
         .subtitulo {
-            color: #4a5b73;
+            color: #4f6180;
             font-style: italic;
             margin-bottom: 25px;
             padding-left: 28px;
         }
+
         .texto-lectura {
             background: white;
             padding: 25px;
             border-radius: 20px;
-            border: 1px solid #c0cee4;
+            border: 1px solid #b8c7e0;
             line-height: 1.7;
             font-size: 1.05rem;
             margin-bottom: 30px;
             white-space: pre-line;
         }
+
+        /* Preguntas */
         .pregunta {
             background: white;
             border-radius: 20px;
-            padding: 20px 25px;
+            padding: 22px 25px;
             margin-bottom: 20px;
-            border: 1px solid #b8c7e0;
+            border: 1px solid #b0c0db;
         }
+
         .num-pregunta {
             background: #f9a826;
             color: #0a2c3d;
@@ -141,41 +165,50 @@
             border-radius: 50px;
             margin-bottom: 15px;
         }
+
         .texto-pregunta {
             font-weight: 600;
             font-size: 1.2rem;
-            margin-bottom: 18px;
+            margin-bottom: 20px;
         }
+
         .opciones {
             display: flex;
             flex-direction: column;
             gap: 12px;
         }
+
         .opcion {
             display: flex;
             align-items: center;
-            gap: 15px;
-            background: #f1f5fd;
+            gap: 16px;
+            background: #f0f5ff;
             padding: 12px 22px;
             border-radius: 40px;
             border: 1px solid transparent;
             cursor: pointer;
+            transition: 0.1s;
         }
+
         .opcion:hover {
-            background: #e5edfd;
+            background: #e2ecfe;
             border-color: #0a2c3d;
         }
+
         input[type="radio"] {
             width: 20px;
             height: 20px;
             accent-color: #f9a826;
         }
+
+        /* Botones de acción */
         .acciones {
             display: flex;
             gap: 20px;
             justify-content: center;
-            margin: 25px 0 15px;
+            margin: 20px 0 10px;
         }
+
         .btn-primario, .btn-secundario {
             padding: 15px 40px;
             font-size: 1.2rem;
@@ -184,26 +217,33 @@
             border-radius: 60px;
             cursor: pointer;
             transition: 0.2s;
+            min-width: 220px;
         }
+
         .btn-primario {
             background: #0a2c3d;
             color: white;
             box-shadow: 0 8px 15px rgba(10,44,61,0.3);
         }
+
         .btn-secundario {
             background: white;
             color: #0a2c3d;
             border: 2px solid #0a2c3d;
         }
-        .btn-primario:hover { background: #134b66; transform: scale(1.02); }
-        .btn-secundario:hover { background: #eef3fc; }
+
+        .btn-primario:hover { background: #134f6b; transform: scale(1.02); }
+        .btn-secundario:hover { background: #e9f0fa; }
+
+        /* Panel de resultados (oculto hasta finalizar) */
         .panel-resultados {
-            background: #f3f7ff;
+            background: #f3f9ff;
             border-radius: 40px;
             padding: 30px;
-            border: 2px solid #0a2c3d;
-            margin-top: 25px;
+            border: 3px solid #0a2c3d;
+            margin-top: 20px;
         }
+
         .panel-resultados h2 {
             color: #0a2c3d;
             font-size: 2rem;
@@ -211,6 +251,7 @@
             padding-bottom: 15px;
             margin-bottom: 25px;
         }
+
         .tabla-resultados {
             width: 100%;
             border-collapse: collapse;
@@ -218,49 +259,66 @@
             border-radius: 20px;
             overflow: hidden;
             margin-bottom: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
+
         .tabla-resultados th {
             background: #0a2c3d;
             color: white;
             padding: 15px 5px;
             font-size: 1.1rem;
         }
+
         .tabla-resultados td {
             padding: 12px 5px;
             text-align: center;
-            border-bottom: 1px solid #d0daea;
+            border-bottom: 1px solid #cfdaea;
         }
-        .acierto { background-color: #d8f0d8; }
-        .error { background-color: #ffe0e0; }
+
+        .acierto {
+            background-color: #d8f0d8;
+            font-weight: 600;
+        }
+
+        .error {
+            background-color: #ffe0e0;
+        }
+
         .puntaje-final {
             font-size: 2.3rem;
             font-weight: 800;
             color: #0a2c3d;
             background: #f9a826;
             display: inline-block;
-            padding: 10px 50px;
+            padding: 12px 55px;
             border-radius: 60px;
-            margin: 10px 0;
+            margin: 10px 0 20px;
         }
-        .oculto { display: none; }
-        .centrado { text-align: center; }
+
+        .oculto {
+            display: none !important;
+        }
+
+        .centrado {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 <div class="simulador" id="app">
     <div class="cabecera">
         <h1>📚 EXANI-II · Comprensión Lectora</h1>
-        <p>15 lecturas · 45 preguntas · Resultados al finalizar</p>
+        <p>15 textos · 45 preguntas · Resultados al finalizar</p>
     </div>
     <div class="contenido">
 
-        <!-- Barra de progreso -->
+        <!-- Barra de progreso siempre visible -->
         <div class="progreso">
             <div class="barra-progreso" id="barraProgreso"></div>
         </div>
 
-        <!-- Navegación entre lecturas (visible en modo examen) -->
-        <div id="navegacionExamen">
+        <!-- MODO EXAMEN: navegación y lectura (visible solo si no ha finalizado) -->
+        <div id="modoExamen">
             <div class="nav-lectura">
                 <span class="badge-lectura" id="lecturaIndicador">Lectura 1/15</span>
                 <div class="nav-botones">
@@ -269,45 +327,51 @@
                 </div>
             </div>
 
-            <!-- Tarjeta de lectura activa -->
             <div class="tarjeta-lectura" id="tarjetaLectura">
                 <div class="titulo-lectura" id="tituloLectura"></div>
                 <div class="subtitulo" id="subtituloLectura"></div>
                 <div class="texto-lectura" id="textoLectura"></div>
                 <div id="contenedorPreguntas"></div>
             </div>
-        </div>
 
-        <!-- Botones globales (modo examen) -->
-        <div class="acciones" id="botonesExamen">
-            <button class="btn-primario" id="btnFinalizar">📊 Finalizar y ver resultados</button>
-            <button class="btn-secundario" id="btnReiniciar">⟲ Nuevo intento</button>
+            <div class="acciones">
+                <button class="btn-primario" id="btnFinalizar">📊 Finalizar y ver resultados</button>
+                <button class="btn-secundario" id="btnReiniciarExamen">⟲ Nuevo intento</button>
+            </div>
         </div>
 
         <!-- PANEL DE RESULTADOS (oculto hasta finalizar) -->
         <div id="panelResultados" class="panel-resultados oculto">
             <h2>📈 Resultados del simulacro</h2>
             <table class="tabla-resultados" id="tablaDetalle">
-                <thead><tr><th>Lectura</th><th>P1</th><th>P2</th><th>P3</th><th>Aciertos</th></tr></thead>
+                <thead>
+                    <tr>
+                        <th>Lectura</th>
+                        <th>P1</th>
+                        <th>P2</th>
+                        <th>P3</th>
+                        <th>Aciertos</th>
+                    </tr>
+                </thead>
                 <tbody id="tablaDetalleBody"></tbody>
             </table>
             <div class="centrado">
                 <span class="puntaje-final" id="puntajeTotal">0/45</span>
             </div>
-            <div class="acciones" style="margin-top: 30px;">
-                <button class="btn-primario" id="btnReintentar">⟲ Nuevo intento</button>
-                <button class="btn-secundario" id="btnSalir">✔ Finalizar</button>
+            <div class="acciones">
+                <button class="btn-primario" id="btnNuevoIntento">⟲ Nuevo intento</button>
+                <button class="btn-secundario" id="btnFinalizarApp">✔ Finalizar</button>
             </div>
         </div>
-
     </div>
 </div>
 
 <script>
 (function() {
-    // ==============================================================
-    // 15 LECTURAS COMPLETAS (basadas en el PDF original)
-    // ==============================================================
+    // --------------------------------------------------------------
+    // 15 LECTURAS COMPLETAS (textos, preguntas y opciones)
+    // Basado en el PDF "Comprension_lectora_Superior.pdf"
+    // --------------------------------------------------------------
     const lecturas = [
         { // 1 - Dilema tecnología
             titulo: "Lectura 1: El dilema de la tecnología y el individuo",
@@ -342,14 +406,14 @@
         { // 3 - Imprenta
             titulo: "Lectura 3: La invención de la imprenta y la ruptura epistemológica",
             subtitulo: "",
-            texto: `La invención de la imprenta de tipos móviles por Johannes Gutenberg a mediados del siglo XV no fue simplemente una mejora tecnológica en la reproducción de textos, sino un agente catalizador de una profunda ruptura en la forma en que se construye y se distribuye el conocimiento. Antes de la imprenta, la información era escasa, costosa y controlada por instituciones centralizadas. La lectura era un acto público y oral, mediado por un sacerdote o un lector culto. Con la imprenta, el libro se democratiza, se vuelve reproducible en masa y económico. Esto no solo dispara la alfabetización, sino que promueve una lectura silenciosa e individualizada. Este cambio es fundamental: el conocimiento pasa de ser una doctrina colectiva a una experiencia personal e íntima. Se fomenta la crítica, la interpretación individual de textos religiosos y el surgimiento de las ciencias modernas.`,
+            texto: `La invención de la imprenta de tipos móviles por Johannes Gutenberg a mediados del siglo XV no fue simplemente una mejora tecnológica en la reproducción de textos, sino un agente catalizador de una profunda ruptura en la forma en que se construye y se distribuye el conocimiento. Antes de la imprenta, la información era escasa, costosa y controlada por instituciones centralizadas (monasterios y universidades). La lectura era un acto público y oral, mediado por un sacerdote o un lector culto. Con la imprenta, el libro se democratiza, se vuelve reproducible en masa y, crucialmente, económico. Esto no solo dispara la alfabetización, sino que promueve una lectura silenciosa e individualizada. Este cambio, que puede parecer menor, es fundamental: el conocimiento pasa de ser una doctrina colectiva a una experiencia personal e íntima. Se fomenta la crítica, la interpretación individual de textos religiosos (facilitando la Reforma Protestante) y el surgimiento de las ciencias modernas al permitir una rápida difusión y verificación de hallazgos.`,
             preguntas: [
                 "¿Cuál es la principal transformación epistemológica que el autor atribuye a la imprenta?",
                 "La frase 'lectura silenciosa e individualizada' implicó el surgimiento de:",
                 "¿Qué se puede inferir sobre el papel de la Iglesia antes de la invención de Gutenberg?"
             ],
             opciones: [
-                ["A) Permitió la rápida traducción de textos del latín al alemán.", "B) Cambió la construcción del conocimiento de una doctrina colectiva a una experiencia crítica e individual.", "C) Redujo el costo de los libros a niveles insignificantes.", "D) Fomentó exclusivamente la lectura pública en plazas y ayuntamientos."],
+                ["A) Permitió la rápida traducción de textos del latín al alemán.", "B) Cambió la construcción del conocimiento de una doctrina colectiva a una experiencia crítica e individual.", "C) Redujo el costo de los libros a niveles insignificantes para la población.", "D) Fomentó exclusivamente la lectura pública en plazas y ayuntamientos."],
                 ["A) La dependencia total del clero para entender los textos sagrados.", "B) Un pensamiento crítico y una interpretación personal de la información.", "C) La necesidad de construir bibliotecas públicas.", "D) El retorno a la tradición oral como fuente de conocimiento."],
                 ["A) Promovía la distribución masiva de libros a bajo costo.", "B) Era la principal entidad que controlaba el acceso y la interpretación del conocimiento.", "C) Fomentaba la alfabetización en todas las clases sociales.", "D) Utilizaba el conocimiento para apoyar el desarrollo de las ciencias modernas."]
             ]
@@ -357,7 +421,7 @@
         { // 4 - Mano invisible
             titulo: "Lectura 4: La falacia de la 'mano invisible' en el mercado",
             subtitulo: "",
-            texto: `Desde la economía clásica, la metáfora de la "mano invisible" de Adam Smith sugiere que la búsqueda del interés individual en un mercado libre conduce inevitablemente al bienestar social colectivo. Sin embargo, los críticos modernos argumentan que esta falacia ignora una realidad fundamental: los llamados efectos externos o externalidades. Una externalidad ocurre cuando la producción o el consumo de un bien afecta a terceros que no están involucrados en la transacción. Por ejemplo, una fábrica que maximiza su beneficio puede contaminar un río, obligando a la comunidad a pagar los costos de salud o de limpieza. En este caso, la búsqueda del beneficio individual no maximiza el bienestar social, sino que lo reduce. La "mano invisible" no es inherentemente benéfica, sino que requiere una "mano visible" para internalizar los costos ambientales y sociales.`,
+            texto: `Desde la economía clásica, la metáfora de la "mano invisible" de Adam Smith sugiere que la búsqueda del interés individual en un mercado libre conduce inevitablemente al bienestar social colectivo. Sin embargo, los críticos modernos argumentan que esta falacia ignora una realidad fundamental: los llamados efectos externos o externalidades. Una externalidad ocurre cuando la producción o el consumo de un bien afecta a terceros que no están involucrados en la transacción. Por ejemplo, una fábrica que maximiza su beneficio (interés individual) puede contaminar un río (efecto externo), obligando a la comunidad circundante a pagar los costos de salud o de limpieza. En este caso, la búsqueda del beneficio individual no maximiza el bienestar social, sino que lo reduce. La "mano invisible", por lo tanto, no es inherentemente benéfica, sino que requiere una "mano visible" (regulación o impuestos) para internalizar los costos ambientales y sociales y así alinear el interés privado con el bien público.`,
             preguntas: [
                 "¿Cuál es el principal argumento que el autor utiliza para criticar la 'mano invisible'?",
                 "Un ejemplo de externalidad negativa, según el texto, es:",
@@ -366,13 +430,13 @@
             opciones: [
                 ["A) Los mercados libres siempre llevan al colapso económico.", "B) La teoría es demasiado antigua para ser relevante hoy en día.", "C) La metáfora ignora las 'externalidades', donde el beneficio privado perjudica a terceros.", "D) Adam Smith no consideró la existencia de monopolios."],
                 ["A) La inversión en una nueva maquinaria para aumentar la producción.", "B) La contaminación de un río causada por una fábrica.", "C) La competencia entre dos empresas por los mismos clientes.", "D) La reducción de costos operativos internos de una empresa."],
-                ["A) Dejar que el mercado se regule completamente sin intervención.", "B) La internalización de los costos mediante la regulación o impuestos.", "C) Prohibir cualquier tipo de búsqueda de interés individual.", "D) Crear una nueva metáfora económica."]
+                ["A) Dejar que el mercado se regule completamente sin intervención.", "B) La internalización de los costos mediante la regulación o impuestos.", "C) Prohibir cualquier tipo de búsqueda de interés individual.", "D) Crear una nueva metáfora económica para reemplazar la de Smith."]
             ]
         },
         { // 5 - Weltanschauung
             titulo: "Lectura 5: El concepto de Weltanschauung",
             subtitulo: "",
-            texto: `El término alemán Weltanschauung, traducido comúnmente como "cosmovisión" o "visión del mundo", es fundamental en la filosofía y la crítica cultural. No se refiere simplemente a la suma de las creencias de un individuo, sino al marco estructurado de ideas y valores a través del cual una cultura, un grupo social o una persona interpreta la realidad. Esta visión opera como un prisma que filtra la percepción, confiere significado a los eventos y orienta la acción moral. Por ejemplo, una Weltanschauung científica priorizará la evidencia empírica y la razón; una religiosa, la fe y la tradición. El gran desafío de la modernidad tardía es el fenómeno de la fragmentación, donde las grandes narrativas culturales se erosionan.`,
+            texto: `El término alemán Weltanschauung, traducido comúnmente como "cosmovisión" o "visión del mundo", es fundamental en la filosofía y la crítica cultural. No se refiere simplemente a la suma de las creencias de un individuo, sino al marco estructurado de ideas y valores a través del cual una cultura, un grupo social o una persona interpreta la realidad. Esta visión opera como un prisma que filtra la percepción, confiere significado a los eventos y orienta la acción moral. Por ejemplo, una Weltanschauung científica priorizará la evidencia empírica y la razón; una Weltanschauung religiosa, la fe y la tradición. El gran desafío de la modernidad tardía es el fenómeno de la fragmentación, donde las grandes narrativas culturales se erosionan, llevando a menudo a un pluralismo de Weltanschauungen o, peor aún, a una ausencia de marcos coherentes para la comprensión del mundo.`,
             preguntas: [
                 "¿Cuál de las siguientes opciones describe mejor el significado de Weltanschauung?",
                 "Según el texto, el gran desafío de la modernidad tardía es la 'fragmentación', lo cual lleva a:",
@@ -381,7 +445,7 @@
             opciones: [
                 ["A) Un conjunto aleatorio de opiniones personales sobre el clima.", "B) La suma total de conocimientos científicos de una época.", "C) Un marco estructurado de ideas y valores que filtra e interpreta la realidad.", "D) La forma en que se habla el idioma alemán."],
                 ["A) Una única y coherente cosmovisión global.", "B) La consolidación de las narrativas culturales.", "C) La erosión de las grandes narrativas y la posible ausencia de marcos coherentes.", "D) Un retorno a la cosmovisión religiosa como única opción."],
-                ["A) Un objeto caro de cristal.", "B) Un mecanismo que descompone la realidad en sus elementos básicos.", "C) Un marco conceptual o filtro que media la percepción e interpretación de la realidad.", "D) Un obstáculo que impide que la luz llegue a la verdad."]
+                ["A) Un objeto caro de cristal utilizado para decorar.", "B) Un mecanismo que descompone la realidad en sus elementos básicos.", "C) Un marco conceptual o filtro que media la percepción e interpretación de la realidad.", "D) Un obstáculo que impide que la luz llegue a la verdad."]
             ]
         },
         { // 6 - Neuroplasticidad
@@ -394,7 +458,7 @@
                 "Se puede inferir del texto que la neuroplasticidad es:"
             ],
             opciones: [
-                ["A) La música es la única actividad que incrementa la materia gris.", "B) La música es un estímulo potente para la neuroplasticidad y la optimización cognitiva.", "C) El cuerpo calloso solo crece en músicos profesionales de instrumentos de cuerda.", "D) La ejecución de un instrumento solo mejora las habilidades motoras finas."],
+                ["A) La música es la única actividad que incrementa la materia gris en el cerebro.", "B) La música es un estímulo potente para la neuroplasticidad y la optimización cognitiva.", "C) El cuerpo calloso solo crece en músicos profesionales de instrumentos de cuerda.", "D) La ejecución de un instrumento solo mejora las habilidades motoras finas."],
                 ["A) Es el área donde se almacena la memoria a corto plazo.", "B) Es la estructura cerebral responsable de conectar ambos hemisferios.", "C) Es el área que controla las habilidades motoras finas de los dedos.", "D) Es el centro de procesamiento auditivo del sonido."],
                 ["A) Una condición que solo afecta a los niños menores de cinco años.", "B) La rigidez estructural del cerebro en la vejez.", "C) La capacidad de adaptación y reorganización del cerebro ante nuevas experiencias.", "D) Una enfermedad neurológica causada por el estrés."]
             ]
@@ -402,37 +466,37 @@
         { // 7 - Voto informado
             titulo: "Lectura 7: La paradoja del voto informado en la democracia",
             subtitulo: "",
-            texto: `Idealmente, la democracia requiere ciudadanos informados que tomen decisiones racionales al momento de votar. Sin embargo, en la práctica, los costos de adquirir información política relevante suelen superar los beneficios individuales esperados. Este fenómeno se conoce como el problema de la "ignorancia racional". Un solo voto tiene una probabilidad estadísticamente insignificante de cambiar el resultado de una elección. Por lo tanto, desde una perspectiva puramente económica, invertir tiempo y esfuerzo en investigar a todos los candidatos y sus propuestas es una decisión irracional para el votante promedio. Esta ignorancia racional explica por qué muchos votantes confían en atajos como la afiliación partidista o la información simplificada de los medios.`,
+            texto: `Idealmente, la democracia requiere ciudadanos informados que tomen decisiones racionales al momento de votar. Sin embargo, en la práctica, los costos de adquirir información política relevante suelen superar los beneficios individuales esperados. Este fenómeno se conoce como el problema de la "ignorancia racional". Un solo voto tiene una probabilidad estadísticamente insignificante de cambiar el resultado de una elección. Por lo tanto, desde una perspectiva puramente económica, invertir tiempo y esfuerzo en investigar a todos los candidatos y sus propuestas es una decisión irracional para el votante promedio. Es más rentable destinar ese tiempo a actividades que mejoren directamente la vida del individuo (trabajar, descansar, etc.). Esta ignorancia racional explica por qué muchos votantes confían en atajos (heurísticas) como la afiliación partidista, el atractivo de los candidatos o la información simplificada de los medios, en lugar de realizar una investigación exhaustiva.`,
             preguntas: [
                 "¿Cuál es el concepto central que explica el comportamiento del votante, según el texto?",
                 "¿Qué implicación tiene la 'probabilidad estadísticamente insignificante' del voto individual?",
-                "Señale un 'atajo' que el votante usa en lugar de investigar exhaustivamente."
+                "Señale un 'atajo' (heurística) que el votante usa en lugar de investigar exhaustivamente."
             ],
             opciones: [
                 ["A) La desinformación mediática.", "B) El problema de la ignorancia racional.", "C) La falta de interés cívico.", "D) La corrupción electoral."],
-                ["A) Que el votante es más propenso a investigar a fondo.", "B) Que la inversión de tiempo en investigar se vuelve irracional.", "C) Que los partidos deben gastar menos en campañas.", "D) Que los candidatos más atractivos tienen menos posibilidades de ganar."],
-                ["A) Leer todos los planes de gobierno.", "B) Ignorar completamente el proceso electoral.", "C) Confiar en la afiliación partidista o la imagen del candidato.", "D) Medir el impacto real de cada voto."]
+                ["A) Que el votante es más propenso a investigar a fondo.", "B) Que la inversión de tiempo en investigar se vuelve irracional para el votante.", "C) Que los partidos deben gastar menos en campañas.", "D) Que los candidatos más atractivos tienen menos posibilidades de ganar."],
+                ["A) Leer todos los planes de gobierno.", "B) Ignorar completamente el proceso electoral.", "C) Confiar en la afiliación partidista o la imagen del candidato.", "D) Medir el impacto real de cada voto en la urna."]
             ]
         },
         { // 8 - Bioética CRISPR
             titulo: "Lectura 8: Edición genética y dilema bioético",
             subtitulo: "",
-            texto: `La tecnología CRISPR-Cas9 ha revolucionado la genética al permitir modificar el ADN con precisión. Surge entonces una distinción crucial: la modificación somática (altera células no reproductivas, afecta solo al individuo) y la modificación germinal (altera óvulos, espermatozoides o embriones, cambios hereditarios). La comunidad científica acepta la terapia somática para enfermedades graves, pero la edición germinal abre una "pendiente resbaladiza": podría usarse para mejorar rasgos no médicos, creando desigualdad social y eugenesia. La responsabilidad ética es colosal, pues se trata de decisiones que afectarán a generaciones futuras.`,
+            texto: `La tecnología CRISPR-Cas9 ha revolucionado la genética al permitir modificar el ADN con precisión. Surge entonces una distinción crucial: la modificación somática (altera células no reproductivas, afecta solo al individuo) y la modificación germinal (altera óvulos, espermatozoides o embriones, cambios hereditarios). La comunidad científica acepta la terapia somática para enfermedades graves, pero la edición germinal abre una "pendiente resbaladiza": podría usarse para mejorar rasgos no médicos (inteligencia, altura), creando desigualdad social y eugenesia. La responsabilidad ética es colosal, pues se trata de decisiones que afectarán a generaciones futuras sin consentimiento.`,
             preguntas: [
                 "¿Cuál es la principal diferencia ética entre la modificación somática y la germinal?",
                 "¿Qué riesgo social se asocia al concepto de la 'pendiente resbaladiza' en la genética?",
                 "El tono del autor al finalizar el texto es:"
             ],
             opciones: [
-                ["A) La somática solo cura enfermedades, la germinal es solo para mejorar rasgos.", "B) La somática es más barata, la germinal es más cara.", "C) La somática afecta solo al individuo, la germinal afecta a todas las generaciones futuras.", "D) La somática utiliza CRISPR, la germinal no."],
+                ["A) La somática solo cura enfermedades, la germinal es solo para mejorar rasgos.", "B) La somática es más barata, la germinal es más cara.", "C) La somática afecta solo al individuo, la germinal afecta a todas las generaciones futuras.", "D) La somática utiliza CRISPR, la germinal no lo utiliza."],
                 ["A) Que se pierda la información genética de las células somáticas.", "B) Que la tecnología se limite a curar enfermedades graves.", "C) La posibilidad de usar la modificación para mejorar rasgos no médicos, creando desigualdad social.", "D) Que la tecnología CRISPR sea prohibida internacionalmente."],
-                ["A) Optimista, promoviendo el uso masivo de CRISPR.", "B) De alerta y llamado a la reflexión ética.", "C) Científico puro, sin preocupación moral.", "D) Indiferente."]
+                ["A) Optimista, promoviendo el uso masivo de CRISPR-Cas9.", "B) De alerta y llamado a la reflexión ética sobre una responsabilidad crucial.", "C) Científico puro, sin ninguna preocupación moral o social.", "D) Indiferente, señalando que la decisión no afecta a nadie."]
             ]
         },
         { // 9 - Laberinto soledad
             titulo: "Lectura 9: El laberinto de la soledad (Octavio Paz)",
             subtitulo: "",
-            texto: `Para Octavio Paz, el mexicano moderno esconde su intimidad tras una máscara. El disimulo y la simulación son mecanismos de defensa frente a un mundo histórico que percibe como hostil. Esta actitud cerrada, este recelo, deriva de una doble orfandad: la ruptura con la tradición indígena y la lejanía de la cultura española. La soledad del mexicano no es solamente metafísica, sino histórica: producto de un trauma. La madurez, para Paz, no vendrá de negar esa herencia, sino de la confrontación sincera y la aceptación de su pasado.`,
+            texto: `Para Octavio Paz, el mexicano moderno esconde su intimidad tras una máscara. El disimulo y la simulación son mecanismos de defensa frente a un mundo histórico que percibe como hostil. Esta actitud cerrada, este recelo, deriva de una doble orfandad: la ruptura con la tradición indígena (conquista) y la lejanía de la cultura española. La soledad del mexicano no es solamente metafísica (como la de todo hombre), sino histórica: producto de un trauma. La madurez, para Paz, no vendrá de negar esa herencia, sino de la confrontación sincera y la aceptación de su pasado.`,
             preguntas: [
                 "Según Octavio Paz, ¿cuál es el mecanismo psicológico principal que utiliza el mexicano para protegerse?",
                 "¿Qué diferencia establece el texto entre la soledad del mexicano y la soledad universal?",
@@ -440,8 +504,8 @@
             ],
             opciones: [
                 ["A) La extroversión constante.", "B) El disimulo y la simulación (la máscara).", "C) La confrontación violenta y directa.", "D) La negación total de la historia prehispánica."],
-                ["A) La mexicana es producto de la tecnología, la universal es de la historia.", "B) La mexicana es histórica, la universal es metafísica.", "C) La mexicana es fácil de superar, la universal es permanente.", "D) No establece diferencia."],
-                ["A) Negar su herencia.", "B) Imitar la cultura de otros países.", "C) La confrontación sincera y la aceptación de su herencia histórica.", "D) El abandono de todas las ceremonias."]
+                ["A) La soledad mexicana es producto de la tecnología, la universal es de la historia.", "B) La soledad mexicana es histórica (por trauma y orfandad), la universal es metafísica.", "C) La soledad mexicana es fácil de superar, la universal es permanente.", "D) No establece ninguna diferencia, ambas son la misma."],
+                ["A) Negar su herencia y mirar solo hacia el futuro.", "B) Imitar la cultura de otros países.", "C) La confrontación sincera y la aceptación de su herencia histórica.", "D) El abandono de todas las ceremonias tradicionales."]
             ]
         },
         { // 10 - Posverdad
@@ -454,91 +518,89 @@
                 "Se puede inferir del texto que una de las víctimas de la posverdad es:"
             ],
             opciones: [
-                ["A) La falta de acceso a la información objetiva.", "B) Que la verdad es secundaria frente a la emoción y las creencias personales.", "C) Que todos los discursos políticos son falsos.", "D) La constante verificación de los datos por parte del público."],
-                ["A) La apelación a hechos objetivos.", "B) El principio de falsación.", "C) La apelación al sesgo de confirmación.", "D) El diálogo racional."],
+                ["A) La falta de acceso a la información objetiva en los medios.", "B) Que la verdad es secundaria frente a la emoción y las creencias personales.", "C) Que todos los discursos políticos son falsos.", "D) La constante verificación de los datos por parte del público."],
+                ["A) La apelación a hechos objetivos verificables.", "B) El principio de falsación (refutación científica).", "C) La apelación al sesgo de confirmación.", "D) El diálogo racional y la crítica constructiva."],
                 ["A) La emoción.", "B) La polarización.", "C) El diálogo racional y la deliberación democrática.", "D) El discurso de ficción."]
             ]
         },
         { // 11 - Paradoja elección
             titulo: "Lectura 11: La paradoja de la elección",
             subtitulo: "",
-            texto: `Contrario a la creencia popular de que tener más opciones es siempre mejor, la investigación en psicología conductual ha revelado la "paradoja de la elección". Si bien un número limitado de opciones es beneficioso, un exceso de alternativas puede conducir a la parálisis de la decisión, haciendo que el consumidor se sienta abrumado e incapaz de elegir. Más allá de la parálisis, el exceso de elección también reduce la satisfacción posterior. Cuando finalmente se toma una decisión entre muchas, el individuo tiende a lamentarse por las opciones no elegidas (FOMO). El punto óptimo no es la maximización, sino la satisfacción (satisficing): escoger una opción lo "suficientemente buena".`,
+            texto: `Contrario a la creencia popular de que tener más opciones es siempre mejor, la investigación en psicología conductual ha revelado la "paradoja de la elección". Si bien un número limitado de opciones es beneficioso, un exceso de alternativas puede conducir a la parálisis de la decisión, haciendo que el consumidor se sienta abrumado e incapaz de elegir. Más allá de la parálisis, el exceso de elección también reduce la satisfacción posterior. Cuando finalmente se toma una decisión entre muchas, el individuo tiende a lamentarse por las opciones no elegidas (fear of missing out o FOMO) y a culpar a la complejidad del proceso. El punto óptimo, por lo tanto, no es la maximización de la elección, sino la satisfacción (o satisficing, término acuñado por Herbert Simon) que se logra al escoger una opción lo "suficientemente buena".`,
             preguntas: [
                 "¿Qué efecto principal tiene el exceso de opciones en el individuo?",
                 "¿Qué implicación tiene la insatisfacción posterior a la elección?",
-                "El autor sugiere que el punto óptimo es el satisficing, lo cual implica:"
+                "El autor sugiere que el punto óptimo para el individuo es el satisficing, lo cual implica:"
             ],
             opciones: [
-                ["A) Aumenta drásticamente la satisfacción.", "B) Conduce a la parálisis y reduce la satisfacción posterior.", "C) Simplifica el proceso de elección.", "D) Garantiza que la opción sea la mejor."],
-                ["A) El individuo culpa al producto.", "B) El individuo se arrepiente por las opciones no elegidas (FOMO).", "C) Siente que debió invertir menos tiempo.", "D) Siempre alcanza el satisficing."],
-                ["A) Buscar la opción absolutamente mejor.", "B) Conformarse con la primera opción.", "C) Elegir la opción 'suficientemente buena' para satisfacer los criterios mínimos.", "D) Evitar tomar decisiones importantes."]
+                ["A) Aumenta drásticamente la satisfacción con la decisión tomada.", "B) Conduce a la parálisis de la decisión y reduce la satisfacción posterior.", "C) Simplifica el proceso de elección, reduciendo el FOMO.", "D) Garantiza que la opción elegida sea siempre la mejor posible."],
+                ["A) El individuo culpa al producto, no al proceso de elección.", "B) El individuo se arrepiente por las opciones que no eligió (FOMO).", "C) El individuo siente que debió haber invertido menos tiempo en la decisión.", "D) El individuo siempre alcanza el estado de satisficing."],
+                ["A) Buscar la opción que es absolutamente la mejor en todos los aspectos.", "B) Conformarse con la primera opción que se presenta.", "C) Elegir la opción que es 'suficientemente buena' para satisfacer los criterios mínimos.", "D) Evitar tomar cualquier decisión importante."]
             ]
         },
         { // 12 - Moneda fiduciaria
             titulo: "Lectura 12: El oro y la naturaleza fiduciaria de la moneda",
             subtitulo: "",
-            texto: `Históricamente, el valor de la moneda estaba ligado al estándar oro: cada unidad de papel moneda representaba una cantidad fija de metal precioso en las reservas de un banco central. Este sistema limitaba la inflación, ya que el gobierno no podía imprimir más dinero del que respaldaba en oro. Sin embargo, desde 1971, la mayoría de las monedas operan bajo un sistema fiduciario, donde la moneda no está respaldada por una mercancía física, sino por la confianza que los ciudadanos y los mercados tienen en el gobierno emisor. Esta transición introdujo la vulnerabilidad del valor a factores psicológicos y políticos.`,
+            texto: `Históricamente, el valor de la moneda estaba ligado al estándar oro: cada unidad de papel moneda representaba una cantidad fija de metal precioso en las reservas de un banco central. Este sistema limitaba la inflación, ya que el gobierno no podía simplemente imprimir más dinero del que respaldaba en oro. Sin embargo, desde 1971, la mayoría de las monedas del mundo operan bajo un sistema fiduciario (o fiat), donde la moneda no está respaldada por una mercancía física, sino por la confianza que los ciudadanos y los mercados tienen en la capacidad del gobierno emisor para mantener su valor. En un sistema fiduciario, el valor de un billete no es intrínseco, sino contractual y socialmente aceptado. Esta transición, aunque liberó a los gobiernos para usar la política monetaria de manera más flexible, introdujo la vulnerabilidad del valor a factores psicológicos, políticos y a la mala gestión de la impresión de dinero.`,
             preguntas: [
                 "¿Cuál es la principal diferencia entre el estándar oro y el sistema fiduciario?",
-                "En el sistema fiduciario, ¿qué confiere valor al dinero?",
+                "En el contexto del sistema fiduciario, ¿qué confiere valor al dinero?",
                 "¿Qué vulnerabilidad introdujo el cambio al sistema fiduciario?"
             ],
             opciones: [
-                ["A) El oro se basa en el valor del papel; el fiduciario en el metal.", "B) El oro limita la impresión de dinero; el fiduciario se basa en la confianza.", "C) El oro fue abolido en el siglo XIX.", "D) El fiduciario es siempre más estable."],
-                ["A) La cantidad de oro que lo respalda.", "B) La deuda del gobierno.", "C) La confianza en la estabilidad del gobierno emisor.", "D) El tamaño físico del billete."],
-                ["A) La limitación de la política monetaria.", "B) La dependencia del valor a la confianza y la gestión política.", "C) La imposibilidad de imprimir dinero.", "D) Un sistema basado solo en mercancías."]
+                ["A) El estándar oro se basa en el valor del papel; el fiduciario, en el valor del metal.", "B) El estándar oro limita la impresión de dinero; el fiduciario lo respalda en la confianza y el decreto gubernamental.", "C) El estándar oro fue abolido en el siglo XIX; el fiduciario existe desde la Edad Media.", "D) El sistema fiduciario es siempre más estable que el oro."],
+                ["A) La cantidad intrínseca de oro que lo respalda.", "B) La cantidad de deuda que el gobierno puede adquirir.", "C) La confianza de los ciudadanos y mercados en la estabilidad del gobierno emisor.", "D) El tamaño físico del billete."],
+                ["A) La limitación de la política monetaria.", "B) La dependencia del valor a la confianza y la gestión política.", "C) La imposibilidad de imprimir dinero para combatir crisis.", "D) Un sistema monetario basado solo en el intercambio de mercancías."]
             ]
         },
         { // 13 - Brutalismo
             titulo: "Lectura 13: La estética del brutalismo en la arquitectura",
             subtitulo: "",
-            texto: `El brutalismo, estilo arquitectónico que floreció desde la década de 1950 hasta mediados de 1970, es frecuentemente mal entendido. Lejos de ser "brutal" en el sentido de crueldad, su nombre proviene del francés béton brut (hormigón crudo). Este estilo se caracteriza por dejar al descubierto las superficies de hormigón sin pulir, revelando honestamente la naturaleza del material. El movimiento tenía una intención social profunda: buscar un estilo austero y democrático que pudiera ser producido en masa para albergar a las clases trabajadoras. El objetivo era la funcionalidad ética: la forma debía reflejar su propósito sin ornamentación.`,
+            texto: `El brutalismo, un estilo arquitectónico que floreció desde la década de 1950 hasta mediados de 1970, es frecuentemente mal entendido. Lejos de ser "brutal" en el sentido de crueldad, su nombre proviene del francés béton brut (hormigón crudo o desnudo). Este estilo se caracteriza por dejar al descubierto las superficies de hormigón sin pulir ni revestir, revelando honestamente la naturaleza del material de construcción. El movimiento tenía una intención social profunda. Se alineó con la arquitectura modernista de posguerra, buscando un estilo austero y democrático que pudiera ser producido en masa para albergar a las clases trabajadoras. El objetivo era la funcionalidad ética: la forma de un edificio debía reflejar su propósito sin ornamentación superficial. Si bien hoy muchos edificios brutalistas son criticados por su aspecto "frío" u "opresivo", para sus creadores representaban la honestidad estructural y el ideal de la vivienda social.`,
             preguntas: [
                 "¿De dónde proviene el término 'brutalismo' en la arquitectura?",
                 "La 'funcionalidad ética' en el brutalismo se refiere a:",
-                "¿Cuál fue una de las principales intenciones sociales del brutalismo?"
+                "¿Cuál fue una de las principales intenciones sociales de los creadores del brutalismo?"
             ],
             opciones: [
-                ["A) De la intención de crear edificios violentos.", "B) De la palabra francesa béton brut (hormigón crudo).", "C) De la dureza de las líneas rectas.", "D) Del nombre del arquitecto."],
-                ["A) Usar materiales caros.", "B) Que la forma refleje su propósito sin ornamentación.", "C) Construir solo para la élite.", "D) Usar vidrio y acero."],
-                ["A) Crear estructuras imposibles de replicar.", "B) Diseñar espacios opresivos.", "C) Construir viviendas sociales de bajo costo de manera democrática.", "D) Representar el poder del Estado."]
+                ["A) De la intención de crear edificios que se vieran violentos.", "B) De la palabra francesa béton brut, que significa hormigón crudo.", "C) De la dureza de las líneas rectas del diseño.", "D) Del nombre del arquitecto que lo inventó."],
+                ["A) El uso de materiales caros y exóticos en el revestimiento.", "B) Que la forma del edificio debe reflejar su propósito sin ornamentación.", "C) La necesidad de construir edificios solo para la élite.", "D) El uso exclusivo de vidrio y acero en la fachada."],
+                ["A) Crear estructuras que fueran imposibles de replicar.", "B) Diseñar espacios opresivos para el control social.", "C) Construir viviendas sociales de bajo costo de manera democrática.", "D) Usar el hormigón para representar el poder absoluto del Estado."]
             ]
         },
         { // 14 - Objetividad algorítmica
             titulo: "Lectura 14: La ilusión de la objetividad algorítmica",
             subtitulo: "",
-            texto: `Existe una creencia extendida de que los algoritmos, al ser programas de software, son inherentemente objetivos y justos, libres de sesgos humanos. Sin embargo, esta visión es una ilusión peligrosa. Los algoritmos no nacen en un vacío ético; se entrenan con datos históricos que reflejan sesgos sociales preexistentes. Un algoritmo de préstamo bancario que aprende de patrones históricos donde ciertas minorías recibieron menos préstamos tenderá a replicar esa discriminación. La objetividad del algoritmo es, en realidad, la objetivación del sesgo. Es crucial implementar auditorías éticas de los datos de entrenamiento.`,
+            texto: `Existe una creencia extendida de que los algoritmos, al ser programas de software, son inherentemente objetivos y justos, libres de los sesgos humanos. Sin embargo, esta visión es una ilusión peligrosa. Los algoritmos no nacen en un vacío ético; son el producto de decisiones de diseño y, fundamentalmente, se entrenan con datos históricos que reflejan sesgos sociales preexistentes (racismo, clasismo, discriminación). Un algoritmo de préstamo bancario, por ejemplo, que aprende de patrones históricos donde ciertas minorías recibieron menos préstamos, tenderá a replicar esa discriminación en sus decisiones futuras, perpetuando el sesgo a gran escala bajo la apariencia de lógica matemática. La objetividad del algoritmo es, en realidad, la objetivación del sesgo. Por ello, es crucial que los desarrolladores y las políticas públicas implementen auditorías éticas de los datos de entrenamiento y los criterios de decisión.`,
             preguntas: [
                 "¿Cuál es la tesis principal del autor?",
-                "¿Cómo replica un algoritmo un sesgo social?",
+                "¿Cómo replica un algoritmo un sesgo social, según el texto?",
                 "La frase 'objetivación del sesgo' sugiere que:"
             ],
             opciones: [
-                ["A) Los algoritmos son siempre objetivos.", "B) Deben prohibirse.", "C) La objetividad algorítmica es una ilusión porque replican sesgos sociales.", "D) El sesgo solo existe en algoritmos bancarios."],
-                ["A) Por introducción manual de prejuicios.", "B) Aprendiendo de patrones en datos históricos con discriminación.", "C) Negándose a funcionar sin datos frescos.", "D) Creando conflictos intencionalmente."],
-                ["A) El sesgo se vuelve evidente.", "B) El algoritmo elimina errores humanos.", "C) El sesgo se legitima como verdad matemática imparcial.", "D) El objetivo es crear justicia social."]
+                ["A) Los algoritmos son siempre objetivos y justos.", "B) Los algoritmos son peligrosos y deben prohibirse.", "C) La supuesta objetividad de los algoritmos es una ilusión porque replican sesgos sociales inherentes a los datos de entrenamiento.", "D) El sesgo solo existe en los algoritmos de préstamo bancario."],
+                ["A) Mediante la introducción manual de prejuicios por el programador.", "B) Aprendiendo de patrones en los datos históricos que contienen discriminación preexistente.", "C) Negándose a funcionar si no recibe datos frescos y sin errores.", "D) Creando intencionalmente conflictos sociales."],
+                ["A) El sesgo se vuelve evidente y fácil de corregir.", "B) El algoritmo elimina todos los errores humanos.", "C) El sesgo se legitima y se perpetúa como si fuera una verdad matemática imparcial.", "D) El objetivo del algoritmo es crear la máxima justicia social."]
             ]
         },
         { // 15 - Expresionismo
             titulo: "Lectura 15: Expresionismo alemán",
             subtitulo: "",
-            texto: `El Expresionismo Alemán (principios del XX) fue un movimiento cultural que reaccionó contra el Impresionismo. Mientras que el Impresionismo intentaba reflejar la luz y la impresión visual, el Expresionismo buscaba plasmar la emoción, la angustia y la realidad interna del artista. Influido por la alienación urbana, la incertidumbre y la Gran Guerra, el arte expresionista empleaba colores violentos, pinceladas agresivas y distorsión de la forma. Más que representar la realidad externa, buscaba expresar el mundo interior.`,
+            texto: `El Expresionismo Alemán (principios del XX) fue un movimiento cultural que reaccionó contra el Impresionismo y el naturalismo. Mientras que el Impresionismo intentaba reflejar la luz y la impresión visual, el Expresionismo buscaba plasmar la emoción, la angustia y la realidad interna del artista. Influido por la alienación urbana, la incertidumbre y la Gran Guerra, el arte expresionista empleaba colores violentos, pinceladas agresivas y distorsión de la forma. Más que representar la realidad externa, buscaba expresar el mundo interior.`,
             preguntas: [
-                "¿Cuál fue el objetivo principal del Expresionismo Alemán?",
-                "¿Cuál fue el contexto social que influyó en el Expresionismo?",
-                "¿Qué recurso estético empleaban los expresionistas?"
+                "¿Cuál fue el objetivo principal del Expresionismo Alemán en contraste con el Impresionismo?",
+                "¿Cuál fue el contexto social y emocional que influyó en el Expresionismo?",
+                "¿Qué recurso estético empleaban los expresionistas para plasmar la emoción?"
             ],
             opciones: [
-                ["A) Representar la belleza natural.", "B) Reflejar la luz como el ojo humano.", "C) Plasmar la emoción y la realidad interna.", "D) Crear arte fácil de entender."],
-                ["A) Paz y prosperidad.", "B) Angustia existencial, alienación y la Gran Guerra.", "C) Regreso a lo clásico.", "D) Introducción de la fotografía."],
-                ["A) Representación fiel del cuerpo.", "B) Colores violentos y distorsión de la forma.", "C) Técnica del sfumato.", "D) Paisajes rurales idílicos."]
+                ["A) Representar la belleza natural con gran detalle.", "B) Reflejar la luz de la misma manera que lo hace el ojo humano.", "C) Plasmar la emoción, la angustia y la realidad interna del artista.", "D) Crear un arte fácil de entender para el público."],
+                ["A) Un periodo de paz y prosperidad económica sin precedentes.", "B) La angustia existencial, la alienación urbana y la Gran Guerra.", "C) El regreso a los valores del arte clásico griego y romano.", "D) La introducción de la fotografía en color."],
+                ["A) La representación fiel de los cuerpos humanos.", "B) El uso de colores violentos y la distorsión de la forma.", "C) La técnica del sfumato (suavizado de líneas).", "D) El enfoque exclusivo en paisajes rurales idílicos."]
             ]
         }
     ];
 
-    // ==============================================================
-    // CLAVE DE RESPUESTAS (según PDF)
-    // ==============================================================
+    // CLAVE DE RESPUESTAS (índices 0:A, 1:B, 2:C, 3:D) según PDF
     const clave = [
         [1,1,1], // lectura 1 (B,B,B)
         [1,1,1], // 2 (B,B,B)
@@ -557,21 +619,20 @@
         [2,1,1]  //15 (C,B,B)
     ];
 
-    // Estado de la aplicación
+    // Estado
     let lecturaActual = 0;
     let respuestas = Array(15).fill().map(() => [null, null, null]);
     let finalizado = false;
 
     // Elementos DOM
-    const navegacionExamen = document.getElementById('navegacionExamen');
+    const modoExamen = document.getElementById('modoExamen');
     const panelResultados = document.getElementById('panelResultados');
-    const botonesExamen = document.getElementById('botonesExamen');
-    const btnFinalizar = document.getElementById('btnFinalizar');
-    const btnReiniciar = document.getElementById('btnReiniciar');
-    const btnReintentar = document.getElementById('btnReintentar');
-    const btnSalir = document.getElementById('btnSalir');
     const btnAnterior = document.getElementById('btnAnterior');
     const btnSiguiente = document.getElementById('btnSiguiente');
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    const btnReiniciarExamen = document.getElementById('btnReiniciarExamen');
+    const btnNuevoIntento = document.getElementById('btnNuevoIntento');
+    const btnFinalizarApp = document.getElementById('btnFinalizarApp');
     const lecturaIndicador = document.getElementById('lecturaIndicador');
     const tituloLectura = document.getElementById('tituloLectura');
     const subtituloLectura = document.getElementById('subtituloLectura');
@@ -591,6 +652,11 @@
                 respuestas[lecturaActual][preguntaIdx] = valor;
             }
         });
+    }
+
+    function actualizarBarra() {
+        const totalResp = respuestas.flat().filter(r => r !== null).length;
+        barraProgreso.style.width = (totalResp / 45 * 100) + '%';
     }
 
     function renderizarLectura() {
@@ -619,17 +685,13 @@
         lecturaIndicador.textContent = `Lectura ${lecturaActual+1}/15`;
         btnAnterior.disabled = (lecturaActual === 0);
         btnSiguiente.disabled = (lecturaActual === 14);
-
-        // Actualizar barra de progreso
-        const totalRespondidas = respuestas.flat().filter(r => r !== null).length;
-        barraProgreso.style.width = (totalRespondidas / 45 * 100) + '%';
+        actualizarBarra();
     }
 
     function mostrarResultados() {
         guardarRespuestasActuales();
         finalizado = true;
-        navegacionExamen.classList.add('oculto');
-        botonesExamen.classList.add('oculto');
+        modoExamen.classList.add('oculto');
         panelResultados.classList.remove('oculto');
 
         let totalAciertos = 0;
@@ -657,8 +719,7 @@
         respuestas = Array(15).fill().map(() => [null, null, null]);
         lecturaActual = 0;
         finalizado = false;
-        navegacionExamen.classList.remove('oculto');
-        botonesExamen.classList.remove('oculto');
+        modoExamen.classList.remove('oculto');
         panelResultados.classList.add('oculto');
         renderizarLectura();
     }
@@ -685,19 +746,18 @@
     });
 
     btnFinalizar.addEventListener('click', mostrarResultados);
-    btnReiniciar.addEventListener('click', reiniciarSimulacro);
-    btnReintentar.addEventListener('click', reiniciarSimulacro);
-    btnSalir.addEventListener('click', finalizarApp);
+    btnReiniciarExamen.addEventListener('click', reiniciarSimulacro);
+    btnNuevoIntento.addEventListener('click', reiniciarSimulacro);
+    btnFinalizarApp.addEventListener('click', finalizarApp);
 
-    // Guardar respuestas al cambiar radio
+    // Guardar al cambiar radio y actualizar barra
     document.addEventListener('change', (e) => {
         if (e.target.matches('input[type="radio"]')) {
             const preguntaIdx = parseInt(e.target.dataset.pregunta);
             const valor = parseInt(e.target.value);
             if (!isNaN(preguntaIdx) && !isNaN(valor)) {
                 respuestas[lecturaActual][preguntaIdx] = valor;
-                const totalRespondidas = respuestas.flat().filter(r => r !== null).length;
-                barraProgreso.style.width = (totalRespondidas / 45 * 100) + '%';
+                actualizarBarra();
             }
         }
     });
