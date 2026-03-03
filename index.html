@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXANI-II · Comprensión Lectora (modo examen real)</title>
+    <title>EXANI-II · Comprensión Lectora (Registro + resultados a Google Sheets)</title>
     <style>
         * {
             margin: 0;
@@ -17,6 +17,7 @@
             padding: 25px 20px;
             display: flex;
             justify-content: center;
+            min-height: 100vh;
         }
 
         .simulador {
@@ -235,7 +236,7 @@
         .btn-primario:hover { background: #134f6b; transform: scale(1.02); }
         .btn-secundario:hover { background: #e9f0fa; }
 
-        /* Panel de resultados (oculto hasta finalizar) */
+        /* Panel de resultados */
         .panel-resultados {
             background: #f3f9ff;
             border-radius: 40px;
@@ -295,6 +296,61 @@
             margin: 10px 0 20px;
         }
 
+        /* Panel de registro */
+        .panel-registro {
+            background: #f3f9ff;
+            border-radius: 40px;
+            padding: 30px;
+            border: 3px solid #0a2c3d;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .panel-registro h2 {
+            color: #0a2c3d;
+            margin-bottom: 20px;
+        }
+
+        .campo {
+            margin-bottom: 20px;
+            text-align: left;
+            max-width: 400px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .campo label {
+            display: block;
+            font-weight: 600;
+            color: #0a2c3d;
+            margin-bottom: 5px;
+        }
+
+        .campo input {
+            width: 100%;
+            padding: 12px 20px;
+            border-radius: 50px;
+            border: 2px solid #b0c0db;
+            font-size: 1rem;
+        }
+
+        .campo input:focus {
+            outline: none;
+            border-color: #f9a826;
+        }
+
+        .btn-registro {
+            background: #0a2c3d;
+            color: white;
+            padding: 15px 50px;
+            font-size: 1.3rem;
+            font-weight: 700;
+            border: none;
+            border-radius: 60px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
         .oculto {
             display: none !important;
         }
@@ -302,23 +358,56 @@
         .centrado {
             text-align: center;
         }
+
+        .mensaje-exito {
+            background: #d4edda;
+            color: #155724;
+            padding: 15px;
+            border-radius: 50px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
+
+        .mensaje-error {
+            background: #f8d7da;
+            color: #721c24;
+            padding: 15px;
+            border-radius: 50px;
+            margin: 15px 0;
+            font-weight: 600;
+        }
     </style>
 </head>
 <body>
 <div class="simulador" id="app">
     <div class="cabecera">
         <h1>📚 EXANI-II · Comprensión Lectora</h1>
-        <p>15 textos · 45 preguntas · Resultados al finalizar</p>
+        <p>15 textos · 45 preguntas · Resultados en tu Google Sheets</p>
     </div>
     <div class="contenido">
 
-        <!-- Barra de progreso siempre visible -->
-        <div class="progreso">
+        <!-- Panel de registro inicial (visible) -->
+        <div id="panelRegistro" class="panel-registro">
+            <h2>Registro para guardar tus resultados</h2>
+            <div class="campo">
+                <label>Nombre completo:</label>
+                <input type="text" id="inputNombre" placeholder="Ej. Juan Pérez">
+            </div>
+            <div class="campo">
+                <label>Correo electrónico:</label>
+                <input type="email" id="inputEmail" placeholder="ejemplo@correo.com">
+            </div>
+            <div id="mensajeRegistro"></div>
+            <button class="btn-registro" id="btnComenzar">Comenzar examen</button>
+        </div>
+
+        <!-- Barra de progreso (oculta hasta comenzar) -->
+        <div class="progreso oculto" id="progresoContainer">
             <div class="barra-progreso" id="barraProgreso"></div>
         </div>
 
-        <!-- MODO EXAMEN: navegación y lectura (visible solo si no ha finalizado) -->
-        <div id="modoExamen">
+        <!-- MODO EXAMEN: navegación y lectura (oculto hasta registro) -->
+        <div id="modoExamen" class="oculto">
             <div class="nav-lectura">
                 <span class="badge-lectura" id="lecturaIndicador">Lectura 1/15</span>
                 <div class="nav-botones">
@@ -335,7 +424,7 @@
             </div>
 
             <div class="acciones">
-                <button class="btn-primario" id="btnFinalizar">📊 Finalizar y ver resultados</button>
+                <button class="btn-primario" id="btnFinalizar">📊 Finalizar y enviar resultados</button>
                 <button class="btn-secundario" id="btnReiniciarExamen">⟲ Nuevo intento</button>
             </div>
         </div>
@@ -343,6 +432,7 @@
         <!-- PANEL DE RESULTADOS (oculto hasta finalizar) -->
         <div id="panelResultados" class="panel-resultados oculto">
             <h2>📈 Resultados del simulacro</h2>
+            <div id="mensajeEnvio"></div>
             <table class="tabla-resultados" id="tablaDetalle">
                 <thead>
                     <tr>
@@ -369,8 +459,8 @@
 <script>
 (function() {
     // --------------------------------------------------------------
-    // 15 LECTURAS COMPLETAS (textos, preguntas y opciones)
-    // Basado en el PDF "Comprension_lectora_Superior.pdf"
+    // 15 LECTURAS COMPLETAS (por brevedad, usar las mismas del código anterior)
+    // Se incluyen las 15 lecturas con sus preguntas y opciones.
     // --------------------------------------------------------------
     const lecturas = [
         { // 1 - Dilema tecnología
@@ -619,14 +709,60 @@
         [2,1,1]  //15 (C,B,B)
     ];
 
-    // Estado
+    // ==============================================================
+    // CONFIGURACIÓN DE GOOGLE APPS SCRIPT
+    // ==============================================================
+    // IMPORTANTE: Debes crear un Google Apps Script con este código:
+    /*
+    function doPost(e) {
+      var data = JSON.parse(e.postData.contents);
+      var sheet = SpreadsheetApp.openById('TU_ID_DE_HOJA').getSheetByName('Respuestas');
+      
+      // Crear cabeceras si no existen
+      if (sheet.getLastRow() === 0) {
+        sheet.appendRow(['Timestamp', 'Nombre', 'Email', 'Aciertos', 'Total', 'Porcentaje', 
+                         'L1P1','L1P2','L1P3','L2P1','L2P2','L2P3','L3P1','L3P2','L3P3',
+                         'L4P1','L4P2','L4P3','L5P1','L5P2','L5P3','L6P1','L6P2','L6P3',
+                         'L7P1','L7P2','L7P3','L8P1','L8P2','L8P3','L9P1','L9P2','L9P3',
+                         'L10P1','L10P2','L10P3','L11P1','L11P2','L11P3','L12P1','L12P2','L12P3',
+                         'L13P1','L13P2','L13P3','L14P1','L14P2','L14P3','L15P1','L15P2','L15P3']);
+      }
+      
+      var fila = [
+        new Date(),
+        data.nombre,
+        data.email,
+        data.aciertos,
+        data.total,
+        data.porcentaje,
+        ...data.respuestas  // expande el array de 45 respuestas
+      ];
+      
+      sheet.appendRow(fila);
+      return ContentService.createTextOutput(JSON.stringify({resultado: 'ok'}))
+        .setMimeType(ContentService.MimeType.JSON);
+    }
+    */
+    // Luego despliega como "aplicación web" con acceso "Cualquiera" y copia la URL.
+    const URL_GOOGLE_APPS_SCRIPT = 'https://script.google.com/macros/s/AKfycbyeHmIZgebHcGCRoQx04QD-gpQTcipsfudo3l9zoKk2nI1TKaGmoxJhQeTHSUK-ZKq5/exec'; // <--- CAMBIA ESTO
+
+    // Estado de la aplicación
     let lecturaActual = 0;
     let respuestas = Array(15).fill().map(() => [null, null, null]);
     let finalizado = false;
+    let datosUsuario = { nombre: '', email: '' };
 
     // Elementos DOM
+    const panelRegistro = document.getElementById('panelRegistro');
+    const progresoContainer = document.getElementById('progresoContainer');
     const modoExamen = document.getElementById('modoExamen');
     const panelResultados = document.getElementById('panelResultados');
+    const inputNombre = document.getElementById('inputNombre');
+    const inputEmail = document.getElementById('inputEmail');
+    const btnComenzar = document.getElementById('btnComenzar');
+    const mensajeRegistro = document.getElementById('mensajeRegistro');
+    const mensajeEnvio = document.getElementById('mensajeEnvio');
+    
     const btnAnterior = document.getElementById('btnAnterior');
     const btnSiguiente = document.getElementById('btnSiguiente');
     const btnFinalizar = document.getElementById('btnFinalizar');
@@ -688,6 +824,47 @@
         actualizarBarra();
     }
 
+    function calcularResultados() {
+        let totalAciertos = 0;
+        let respuestasArray = [];
+        
+        for (let l = 0; l < 15; l++) {
+            for (let p = 0; p < 3; p++) {
+                const user = respuestas[l][p];
+                respuestasArray.push(user !== null ? user : -1); // -1 para no contestada
+                if (user === clave[l][p]) totalAciertos++;
+            }
+        }
+        return { totalAciertos, respuestasArray };
+    }
+
+    async function enviarResultados() {
+        const { totalAciertos, respuestasArray } = calcularResultados();
+        const porcentaje = ((totalAciertos / 45) * 100).toFixed(1);
+        
+        const datos = {
+            nombre: datosUsuario.nombre,
+            email: datosUsuario.email,
+            aciertos: totalAciertos,
+            total: 45,
+            porcentaje: porcentaje,
+            respuestas: respuestasArray
+        };
+
+        try {
+            const response = await fetch(URL_GOOGLE_APPS_SCRIPT, {
+                method: 'POST',
+                mode: 'no-cors', // necesario para Apps Script
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(datos)
+            });
+            
+            mensajeEnvio.innerHTML = '<div class="mensaje-exito">✅ Resultados enviados correctamente a Google Sheets</div>';
+        } catch (error) {
+            mensajeEnvio.innerHTML = '<div class="mensaje-error">❌ Error al enviar. Los resultados se muestran a continuación.</div>';
+        }
+    }
+
     function mostrarResultados() {
         guardarRespuestasActuales();
         finalizado = true;
@@ -713,22 +890,57 @@
         }
         tablaDetalleBody.innerHTML = filas;
         puntajeTotal.textContent = `${totalAciertos}/45`;
+
+        // Enviar a Google Sheets
+        enviarResultados();
     }
 
     function reiniciarSimulacro() {
         respuestas = Array(15).fill().map(() => [null, null, null]);
         lecturaActual = 0;
         finalizado = false;
-        modoExamen.classList.remove('oculto');
+        
+        // Volver al panel de registro
+        panelRegistro.classList.remove('oculto');
+        progresoContainer.classList.add('oculto');
+        modoExamen.classList.add('oculto');
         panelResultados.classList.add('oculto');
-        renderizarLectura();
+        
+        // Limpiar mensajes
+        mensajeRegistro.innerHTML = '';
+        mensajeEnvio.innerHTML = '';
     }
 
     function finalizarApp() {
         alert('Simulador finalizado. ¡Gracias por practicar!');
     }
 
+    function comenzarExamen() {
+        const nombre = inputNombre.value.trim();
+        const email = inputEmail.value.trim();
+        
+        if (!nombre || !email) {
+            mensajeRegistro.innerHTML = '<div class="mensaje-error">❌ Por favor completa todos los campos</div>';
+            return;
+        }
+        
+        if (!email.includes('@') || !email.includes('.')) {
+            mensajeRegistro.innerHTML = '<div class="mensaje-error">❌ Ingresa un correo válido</div>';
+            return;
+        }
+        
+        datosUsuario = { nombre, email };
+        panelRegistro.classList.add('oculto');
+        progresoContainer.classList.remove('oculto');
+        modoExamen.classList.remove('oculto');
+        mensajeRegistro.innerHTML = '';
+        
+        renderizarLectura();
+    }
+
     // Event listeners
+    btnComenzar.addEventListener('click', comenzarExamen);
+
     btnAnterior.addEventListener('click', () => {
         guardarRespuestasActuales();
         if (lecturaActual > 0) {
@@ -750,7 +962,7 @@
     btnNuevoIntento.addEventListener('click', reiniciarSimulacro);
     btnFinalizarApp.addEventListener('click', finalizarApp);
 
-    // Guardar al cambiar radio y actualizar barra
+    // Guardar al cambiar radio
     document.addEventListener('change', (e) => {
         if (e.target.matches('input[type="radio"]')) {
             const preguntaIdx = parseInt(e.target.dataset.pregunta);
@@ -763,7 +975,10 @@
     });
 
     // Inicializar
-    renderizarLectura();
+    panelRegistro.classList.remove('oculto');
+    progresoContainer.classList.add('oculto');
+    modoExamen.classList.add('oculto');
+    panelResultados.classList.add('oculto');
 })();
 </script>
 </body>
