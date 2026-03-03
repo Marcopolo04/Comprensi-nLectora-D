@@ -3,353 +3,300 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EXANI-II · Comprensión Lectora (Simulador)</title>
+    <title>EXANI-II · Comprensión Lectora (Simulador oficial)</title>
     <style>
         * {
-            box-sizing: border-box;
-            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
             margin: 0;
             padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Roboto, system-ui, sans-serif;
         }
         body {
-            background: #eef2f7;
-            padding: 25px 20px;
+            background: #e9eef4;
+            padding: 20px;
             display: flex;
-            flex-direction: column;
-            align-items: center;
+            justify-content: center;
         }
-        .main-container {
-            max-width: 1050px;
+        .simulador {
+            max-width: 1100px;
             width: 100%;
             background: white;
-            border-radius: 40px 40px 30px 30px;
-            box-shadow: 0 25px 45px rgba(8, 25, 50, 0.2);
+            border-radius: 40px;
+            box-shadow: 0 30px 50px rgba(0, 20, 50, 0.3);
             overflow: hidden;
-            border: 1px solid rgba(255,255,255,0.5);
         }
-        .header {
-            background: #0b2d4e;
+        .cabecera {
+            background: #0a2c3d;
             color: white;
-            padding: 28px 32px;
+            padding: 30px;
             text-align: center;
-            border-bottom: 5px solid #ffb347;
+            border-bottom: 5px solid #f9a826;
         }
-        .header h1 {
+        .cabecera h1 {
+            font-size: 2.4rem;
             font-weight: 700;
-            font-size: 2.3rem;
-            letter-spacing: -0.5px;
         }
-        .header p {
+        .cabecera p {
             font-size: 1.2rem;
             opacity: 0.9;
-            margin-top: 8px;
+            margin-top: 10px;
         }
-        .simulador-body {
+        .contenido {
             padding: 30px 35px;
-            background: #ffffff;
         }
-        .barra-progreso {
+        .progreso {
             background: #e0e6f0;
-            border-radius: 100px;
             height: 16px;
-            margin: 5px 0 25px 0;
+            border-radius: 50px;
+            margin-bottom: 25px;
             overflow: hidden;
         }
-        .progreso-lleno {
-            background: #ffb347;
-            height: 16px;
+        .barra-progreso {
+            background: #f9a826;
+            height: 100%;
             width: 0%;
-            border-radius: 100px;
-            transition: width 0.2s ease;
+            transition: width 0.3s;
         }
-        .info-lectura {
+        .nav-lectura {
             display: flex;
             justify-content: space-between;
-            align-items: baseline;
-            flex-wrap: wrap;
-            gap: 12px;
-            margin-bottom: 22px;
+            align-items: center;
+            margin-bottom: 20px;
         }
         .badge-lectura {
-            background: #0b2d4e;
+            background: #0a2c3d;
             color: white;
-            padding: 8px 22px;
-            border-radius: 40px;
+            padding: 8px 25px;
+            border-radius: 50px;
+            font-size: 1.2rem;
             font-weight: 600;
-            font-size: 1.25rem;
-            border: 1px solid #ffb347;
+            border: 1px solid #f9a826;
         }
-        .nav-lecturas {
+        .nav-botones {
             display: flex;
-            gap: 14px;
-            flex-wrap: wrap;
+            gap: 15px;
         }
         .btn-nav {
             background: white;
-            border: 2px solid #0b2d4e;
-            color: #0b2d4e;
+            border: 2px solid #0a2c3d;
+            color: #0a2c3d;
             font-weight: 600;
-            font-size: 1rem;
-            padding: 8px 20px;
-            border-radius: 40px;
+            padding: 8px 25px;
+            border-radius: 50px;
             cursor: pointer;
-            transition: 0.1s ease;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.02);
-        }
-        .btn-nav:hover:not(:disabled) {
-            background: #0b2d4e;
-            color: white;
-            border-color: #ffb347;
+            font-size: 1rem;
         }
         .btn-nav:disabled {
             opacity: 0.4;
-            border-color: #9b9b9b;
             cursor: not-allowed;
         }
+        .btn-nav:hover:not(:disabled) {
+            background: #0a2c3d;
+            color: white;
+        }
         .tarjeta-lectura {
-            background: #f7faff;
-            border-radius: 36px;
-            padding: 30px 28px;
-            margin: 15px 0 20px 0;
-            border: 1px solid #d3dcec;
-            box-shadow: inset 0 1px 5px #ffffff, 0 12px 20px rgba(0,0,0,0.05);
+            background: #f5f9ff;
+            border-radius: 30px;
+            padding: 30px;
+            border: 1px solid #cbd6e8;
+            margin-bottom: 25px;
         }
         .titulo-lectura {
-            font-size: 2rem;
+            font-size: 1.9rem;
+            color: #0a2c3d;
             font-weight: 700;
-            color: #0b2d4e;
-            margin-bottom: 5px;
-            border-left: 8px solid #ffb347;
+            border-left: 8px solid #f9a826;
             padding-left: 20px;
+            margin-bottom: 5px;
         }
-        .subtitulo-lectura {
-            color: #3e4f6b;
+        .subtitulo {
+            color: #4a5b73;
             font-style: italic;
             margin-bottom: 25px;
-            font-size: 1.1rem;
             padding-left: 28px;
         }
         .texto-lectura {
-            background: #ffffff;
-            padding: 26px 28px;
-            border-radius: 26px;
-            line-height: 1.65;
+            background: white;
+            padding: 25px;
+            border-radius: 20px;
+            border: 1px solid #c0cee4;
+            line-height: 1.7;
             font-size: 1.05rem;
-            color: #1e2b3c;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.02);
-            border: 1px solid #c9d4e8;
             margin-bottom: 30px;
             white-space: pre-line;
         }
-        .pregunta-item {
+        .pregunta {
             background: white;
-            border-radius: 26px;
-            padding: 22px 26px;
-            margin-bottom: 22px;
-            box-shadow: 0 6px 14px rgba(0, 20, 40, 0.08);
-            border: 1px solid #c4d0e5;
+            border-radius: 20px;
+            padding: 20px 25px;
+            margin-bottom: 20px;
+            border: 1px solid #b8c7e0;
         }
-        .pregunta-num {
-            background: #ffb347;
-            color: #0b2d4e;
+        .num-pregunta {
+            background: #f9a826;
+            color: #0a2c3d;
             font-weight: 700;
             display: inline-block;
             padding: 5px 20px;
-            border-radius: 40px;
-            font-size: 1rem;
-            margin-bottom: 14px;
-            border: 1px solid #cf9d4a;
+            border-radius: 50px;
+            margin-bottom: 15px;
         }
-        .pregunta-texto {
+        .texto-pregunta {
             font-weight: 600;
-            font-size: 1.18rem;
-            margin-bottom: 20px;
-            color: #102331;
+            font-size: 1.2rem;
+            margin-bottom: 18px;
         }
         .opciones {
             display: flex;
             flex-direction: column;
-            gap: 14px;
+            gap: 12px;
         }
-        .opcion-label {
+        .opcion {
             display: flex;
             align-items: center;
-            gap: 16px;
-            background: #f1f5fe;
-            border-radius: 34px;
-            padding: 12px 24px;
-            transition: 0.1s;
+            gap: 15px;
+            background: #f1f5fd;
+            padding: 12px 22px;
+            border-radius: 40px;
+            border: 1px solid transparent;
             cursor: pointer;
-            font-size: 1.02rem;
-            border: 1.5px solid transparent;
         }
-        .opcion-label:hover {
-            background: #e5ecfb;
-            border-color: #0b2d4e;
+        .opcion:hover {
+            background: #e5edfd;
+            border-color: #0a2c3d;
         }
         input[type="radio"] {
-            appearance: none;
-            width: 22px;
-            height: 22px;
-            border: 2px solid #2c3f5c;
-            border-radius: 50%;
-            background: white;
-            cursor: pointer;
-        }
-        input[type="radio"]:checked {
-            background: #ffb347;
-            border-color: #0b2d4e;
-            box-shadow: inset 0 0 0 5px white;
+            width: 20px;
+            height: 20px;
+            accent-color: #f9a826;
         }
         .acciones {
             display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
             gap: 20px;
-            margin: 25px 0 10px;
+            justify-content: center;
+            margin: 25px 0 15px;
         }
         .btn-primario, .btn-secundario {
-            border: none;
-            font-weight: 700;
+            padding: 15px 40px;
             font-size: 1.2rem;
-            padding: 16px 35px;
+            font-weight: 700;
+            border: none;
             border-radius: 60px;
             cursor: pointer;
-            box-shadow: 0 8px 18px rgba(0,30,60,0.2);
-            transition: 0.1s;
-            border: 1px solid rgba(255,255,255,0.3);
-            min-width: 220px;
+            transition: 0.2s;
         }
         .btn-primario {
-            background: #0b2d4e;
+            background: #0a2c3d;
             color: white;
-        }
-        .btn-primario:hover {
-            background: #134472;
-            transform: scale(1.02);
+            box-shadow: 0 8px 15px rgba(10,44,61,0.3);
         }
         .btn-secundario {
-            background: #ffffff;
-            color: #0b2d4e;
-            border: 2px solid #0b2d4e;
+            background: white;
+            color: #0a2c3d;
+            border: 2px solid #0a2c3d;
         }
-        .btn-secundario:hover {
-            background: #eaf1fd;
-        }
-        /* Panel de resultados (final) */
-        .resultado-final-panel {
+        .btn-primario:hover { background: #134b66; transform: scale(1.02); }
+        .btn-secundario:hover { background: #eef3fc; }
+        .panel-resultados {
             background: #f3f7ff;
             border-radius: 40px;
-            padding: 30px 30px;
-            margin: 30px 0 20px;
-            border: 2px solid #0b2d4e;
+            padding: 30px;
+            border: 2px solid #0a2c3d;
+            margin-top: 25px;
         }
-        .resultado-final-panel h2 {
-            color: #0b2d4e;
+        .panel-resultados h2 {
+            color: #0a2c3d;
             font-size: 2rem;
-            border-bottom: 4px solid #ffb347;
-            padding-bottom: 12px;
+            border-bottom: 4px solid #f9a826;
+            padding-bottom: 15px;
             margin-bottom: 25px;
         }
         .tabla-resultados {
             width: 100%;
             border-collapse: collapse;
             background: white;
-            border-radius: 28px;
+            border-radius: 20px;
             overflow: hidden;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.1);
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .tabla-resultados th {
-            background: #0b2d4e;
+            background: #0a2c3d;
             color: white;
-            font-size: 1.1rem;
             padding: 15px 5px;
+            font-size: 1.1rem;
         }
         .tabla-resultados td {
-            padding: 12px 8px;
+            padding: 12px 5px;
             text-align: center;
-            border-bottom: 1px solid #ced9ec;
-            font-size: 1.05rem;
+            border-bottom: 1px solid #d0daea;
         }
-        .acierto-tabla {
-            background-color: #d4f0d4;
-            font-weight: 600;
-        }
-        .desacierto-tabla {
-            background-color: #ffe0e0;
-        }
-        .puntuacion-magna {
-            font-size: 2rem;
+        .acierto { background-color: #d8f0d8; }
+        .error { background-color: #ffe0e0; }
+        .puntaje-final {
+            font-size: 2.3rem;
             font-weight: 800;
-            color: #0b2d4e;
-            background: #ffb347;
+            color: #0a2c3d;
+            background: #f9a826;
             display: inline-block;
-            padding: 10px 45px;
+            padding: 10px 50px;
             border-radius: 60px;
             margin: 10px 0;
         }
-        .oculto {
-            display: none;
-        }
-        .centrado {
-            text-align: center;
-        }
+        .oculto { display: none; }
+        .centrado { text-align: center; }
     </style>
 </head>
 <body>
-<div class="main-container" id="app">
-    <div class="header">
-        <h1>📘 EXANI-II · Comprensión Lectora</h1>
-        <p>15 lecturas · 45 preguntas · simulación oficial</p>
+<div class="simulador" id="app">
+    <div class="cabecera">
+        <h1>📚 EXANI-II · Comprensión Lectora</h1>
+        <p>15 lecturas · 45 preguntas · Resultados al finalizar</p>
     </div>
-    <div class="simulador-body">
+    <div class="contenido">
 
-        <!-- barra de progreso -->
-        <div class="barra-progreso">
-            <div class="progreso-lleno" id="progresoGlobal" style="width: 0%;"></div>
+        <!-- Barra de progreso -->
+        <div class="progreso">
+            <div class="barra-progreso" id="barraProgreso"></div>
         </div>
 
-        <!-- navegación entre lecturas (visible solo si no se finalizó) -->
-        <div id="navegacionPanel">
-            <div class="info-lectura">
-                <span class="badge-lectura" id="lecturaActualLabel">Lectura 1/15</span>
-                <div class="nav-lecturas">
-                    <button class="btn-nav" id="prevBtn" disabled>◀ Anterior</button>
-                    <button class="btn-nav" id="nextBtn">Siguiente ▶</button>
+        <!-- Navegación entre lecturas (visible en modo examen) -->
+        <div id="navegacionExamen">
+            <div class="nav-lectura">
+                <span class="badge-lectura" id="lecturaIndicador">Lectura 1/15</span>
+                <div class="nav-botones">
+                    <button class="btn-nav" id="btnAnterior" disabled>← Anterior</button>
+                    <button class="btn-nav" id="btnSiguiente">Siguiente →</button>
                 </div>
             </div>
-        </div>
 
-        <!-- TARJETA DE LECTURA (visible solo en modo examen) -->
-        <div id="lecturaExamen">
-            <div class="tarjeta-lectura">
+            <!-- Tarjeta de lectura activa -->
+            <div class="tarjeta-lectura" id="tarjetaLectura">
                 <div class="titulo-lectura" id="tituloLectura"></div>
-                <div class="subtitulo-lectura" id="subtituloLectura"></div>
+                <div class="subtitulo" id="subtituloLectura"></div>
                 <div class="texto-lectura" id="textoLectura"></div>
-                <div id="preguntasContainer"></div>
+                <div id="contenedorPreguntas"></div>
             </div>
         </div>
 
-        <!-- BOTONES GLOBALES -->
-        <div class="acciones" id="botonesGlobales">
-            <button class="btn-primario" id="finalizarBtn">📋 Finalizar y ver resultados</button>
-            <button class="btn-secundario" id="reiniciarBtn">⟲ Nuevo intento</button>
+        <!-- Botones globales (modo examen) -->
+        <div class="acciones" id="botonesExamen">
+            <button class="btn-primario" id="btnFinalizar">📊 Finalizar y ver resultados</button>
+            <button class="btn-secundario" id="btnReiniciar">⟲ Nuevo intento</button>
         </div>
 
-        <!-- PANEL DE RESULTADOS (solo visible tras finalizar) -->
-        <div id="panelResultados" class="resultado-final-panel oculto">
-            <h2>📊 Resultados del simulacro</h2>
-            <table class="tabla-resultados" id="tablaResultadosDetalle">
+        <!-- PANEL DE RESULTADOS (oculto hasta finalizar) -->
+        <div id="panelResultados" class="panel-resultados oculto">
+            <h2>📈 Resultados del simulacro</h2>
+            <table class="tabla-resultados" id="tablaDetalle">
                 <thead><tr><th>Lectura</th><th>P1</th><th>P2</th><th>P3</th><th>Aciertos</th></tr></thead>
-                <tbody id="tablaResultadosBody"></tbody>
+                <tbody id="tablaDetalleBody"></tbody>
             </table>
             <div class="centrado">
-                <span class="puntuacion-magna" id="puntajeFinal">0/45</span>
+                <span class="puntaje-final" id="puntajeTotal">0/45</span>
             </div>
-            <div style="display: flex; gap: 20px; justify-content: center; margin-top: 30px;">
-                <button class="btn-primario" id="desdeResultadosReintentar">⟲ Nuevo intento</button>
-                <button class="btn-secundario" id="finalizarAplicacion">✔ Finalizar</button>
+            <div class="acciones" style="margin-top: 30px;">
+                <button class="btn-primario" id="btnReintentar">⟲ Nuevo intento</button>
+                <button class="btn-secundario" id="btnSalir">✔ Finalizar</button>
             </div>
         </div>
 
@@ -357,11 +304,12 @@
 </div>
 
 <script>
-(function(){
-    // --------------------------------------------------------------
-    // 15 LECTURAS (idéntico al original)
+(function() {
+    // ==============================================================
+    // 15 LECTURAS COMPLETAS (basadas en el PDF original)
+    // ==============================================================
     const lecturas = [
-        { // 1
+        { // 1 - Dilema tecnología
             titulo: "Lectura 1: El dilema de la tecnología y el individuo",
             subtitulo: "Fragmento de 'La Sociedad del Rendimiento'",
             texto: `En la era digital, la coerción no proviene de un poder externo y visible (como el panóptico foucaultiano), sino de una presión interna autoimpuesta: la necesidad constante de rendir y ser productivo. La sociedad contemporánea ha transitado de ser una sociedad disciplinaria, basada en la prohibición y el deber, a una sociedad de rendimiento, basada en la optimización y el "poder hacer". Este cambio es sutilmente peligroso, ya que el individuo, al ser su propio explotador bajo la ilusión de la libertad, nunca se siente agotado por la exigencia de un jefe, sino por su propia incapacidad percibida para alcanzar metas ilimitadas. La patología dominante de esta época, como el síndrome de burnout, no es un signo de opresión externa, sino del fracaso del yo en la auto-explotación.`,
@@ -370,188 +318,391 @@
                 "Según el autor, ¿cuál es la causa fundamental del síndrome de burnout en la sociedad de rendimiento?",
                 "El tono general del fragmento es:"
             ],
-            opcionesPorPregunta: [
+            opciones: [
                 ["A) La tecnología ha hecho que los jefes sean menos exigentes.", "B) El peligro actual radica en la auto-explotación del individuo bajo la presión de la productividad.", "C) Las sociedades disciplinarias generaban menos casos de burnout.", "D) La única forma de libertad es abandonar la era digital."],
                 ["A) La falta de regulación gubernamental sobre las horas de trabajo.", "B) El fracaso del individuo en alcanzar las expectativas ilimitadas que se autoimpone.", "C) El control excesivo por parte de las estructuras de poder tradicionales.", "D) La prohibición de ciertas actividades placenteras y de ocio."],
                 ["A) Optimista y de celebración por las nuevas libertades laborales.", "B) Crítico y analítico respecto a las dinámicas de poder contemporáneas.", "C) Descriptivo, solo enunciando hechos sobre el mercado de trabajo.", "D) Nostálgico, añorando la antigua sociedad disciplinaria."]
             ]
         },
-        { //2
-            titulo: "Lectura 2: El fenómeno de las exoplanetas habitables", subtitulo: "Zona de Habitabilidad",
-            texto: `El concepto de Zona de Habitabilidad (ZH), o zona Ricitos de Oro, se refiere a la región orbital alrededor de una estrella donde la temperatura permite que el agua líquida exista en la superficie de un planeta. El agua líquida es considerada esencial para la vida tal como la conocemos. La ZH depende fundamentalmente de la luminosidad y el tamaño de la estrella: cuanto más caliente es la estrella, más lejos debe estar el planeta. Sin embargo, la presencia de un exoplaneta en la ZH no garantiza la habitabilidad. Un factor crucial es la composición atmosférica del planeta, ya que un exceso de gases de efecto invernadero (como el CO2) puede sobrecalentarlo (efecto invernadero descontrolado, como en Venus), incluso si está en una órbita favorable. Por otro lado, una atmósfera demasiado delgada (como en Marte) impide la retención de calor y presión. Por lo tanto, el estudio de exoplanetas habitables requiere un análisis químico y geológico detallado, además de su posición orbital.`,
-            preguntas: ["¿Cuál es la idea principal que el autor busca refutar o matizar?","¿Qué función tiene el CO2 en el contexto de la habitabilidad planetaria, según el texto?","El texto clasifica la atmósfera de un planeta como 'factor crucial' porque:"],
-            opcionesPorPregunta: [
+        { // 2 - Exoplanetas
+            titulo: "Lectura 2: El fenómeno de las exoplanetas habitables",
+            subtitulo: "Zona de Habitabilidad",
+            texto: `El concepto de Zona de Habitabilidad (ZH), o zona Ricitos de Oro, se refiere a la región orbital alrededor de una estrella donde la temperatura permite que el agua líquida exista en la superficie de un planeta. El agua líquida es considerada esencial para la vida tal como la conocemos. La ZH depende fundamentalmente de la luminosidad y el tamaño de la estrella: cuanto más caliente es la estrella, más lejos debe estar el planeta. Sin embargo, la presencia de un exoplaneta en la ZH no garantiza la habitabilidad. Un factor crucial es la composición atmosférica del planeta, ya que un exceso de gases de efecto invernadero (como el CO2) puede sobrecalentarlo, incluso si está en una órbita favorable. Por otro lado, una atmósfera demasiado delgada impide la retención de calor y presión. Por lo tanto, el estudio de exoplanetas habitables requiere un análisis químico y geológico detallado, además de su posición orbital.`,
+            preguntas: [
+                "¿Cuál es la idea principal que el autor busca refutar o matizar?",
+                "¿Qué función tiene el CO2 en el contexto de la habitabilidad planetaria, según el texto?",
+                "El texto clasifica la atmósfera de un planeta como 'factor crucial' porque:"
+            ],
+            opciones: [
                 ["A) Que el agua líquida es indispensable para la vida.", "B) Que la Zona de Habitabilidad es el único criterio para determinar la vida extraterrestre.", "C) Que todas las estrellas son del mismo tamaño y luminosidad.", "D) Que el CO2 es beneficioso para la temperatura superficial de los planetas."],
                 ["A) Es siempre necesario para retener la presión atmosférica.", "B) Es un factor que, en exceso, puede anular la habitabilidad de un planeta.", "C) Es el componente principal de las atmósferas de los planetas gigantes.", "D) No tiene ningún impacto significativo en la temperatura superficial."],
                 ["A) Es la única cosa que puede observarse desde la Tierra.", "B) Determina la presión y la retención de calor necesarias para el agua líquida.", "C) Es la fuente principal del agua superficial.", "D) Influye en la órbita del planeta alrededor de su estrella."]
             ]
         },
-        // (resto de lecturas 3 a 15 con la misma estructura, se abrevia para espacio pero funcional)
+        { // 3 - Imprenta
+            titulo: "Lectura 3: La invención de la imprenta y la ruptura epistemológica",
+            subtitulo: "",
+            texto: `La invención de la imprenta de tipos móviles por Johannes Gutenberg a mediados del siglo XV no fue simplemente una mejora tecnológica en la reproducción de textos, sino un agente catalizador de una profunda ruptura en la forma en que se construye y se distribuye el conocimiento. Antes de la imprenta, la información era escasa, costosa y controlada por instituciones centralizadas. La lectura era un acto público y oral, mediado por un sacerdote o un lector culto. Con la imprenta, el libro se democratiza, se vuelve reproducible en masa y económico. Esto no solo dispara la alfabetización, sino que promueve una lectura silenciosa e individualizada. Este cambio es fundamental: el conocimiento pasa de ser una doctrina colectiva a una experiencia personal e íntima. Se fomenta la crítica, la interpretación individual de textos religiosos y el surgimiento de las ciencias modernas.`,
+            preguntas: [
+                "¿Cuál es la principal transformación epistemológica que el autor atribuye a la imprenta?",
+                "La frase 'lectura silenciosa e individualizada' implicó el surgimiento de:",
+                "¿Qué se puede inferir sobre el papel de la Iglesia antes de la invención de Gutenberg?"
+            ],
+            opciones: [
+                ["A) Permitió la rápida traducción de textos del latín al alemán.", "B) Cambió la construcción del conocimiento de una doctrina colectiva a una experiencia crítica e individual.", "C) Redujo el costo de los libros a niveles insignificantes.", "D) Fomentó exclusivamente la lectura pública en plazas y ayuntamientos."],
+                ["A) La dependencia total del clero para entender los textos sagrados.", "B) Un pensamiento crítico y una interpretación personal de la información.", "C) La necesidad de construir bibliotecas públicas.", "D) El retorno a la tradición oral como fuente de conocimiento."],
+                ["A) Promovía la distribución masiva de libros a bajo costo.", "B) Era la principal entidad que controlaba el acceso y la interpretación del conocimiento.", "C) Fomentaba la alfabetización en todas las clases sociales.", "D) Utilizaba el conocimiento para apoyar el desarrollo de las ciencias modernas."]
+            ]
+        },
+        { // 4 - Mano invisible
+            titulo: "Lectura 4: La falacia de la 'mano invisible' en el mercado",
+            subtitulo: "",
+            texto: `Desde la economía clásica, la metáfora de la "mano invisible" de Adam Smith sugiere que la búsqueda del interés individual en un mercado libre conduce inevitablemente al bienestar social colectivo. Sin embargo, los críticos modernos argumentan que esta falacia ignora una realidad fundamental: los llamados efectos externos o externalidades. Una externalidad ocurre cuando la producción o el consumo de un bien afecta a terceros que no están involucrados en la transacción. Por ejemplo, una fábrica que maximiza su beneficio puede contaminar un río, obligando a la comunidad a pagar los costos de salud o de limpieza. En este caso, la búsqueda del beneficio individual no maximiza el bienestar social, sino que lo reduce. La "mano invisible" no es inherentemente benéfica, sino que requiere una "mano visible" para internalizar los costos ambientales y sociales.`,
+            preguntas: [
+                "¿Cuál es el principal argumento que el autor utiliza para criticar la 'mano invisible'?",
+                "Un ejemplo de externalidad negativa, según el texto, es:",
+                "¿Qué solución propone el autor para mitigar la falacia de la 'mano invisible'?"
+            ],
+            opciones: [
+                ["A) Los mercados libres siempre llevan al colapso económico.", "B) La teoría es demasiado antigua para ser relevante hoy en día.", "C) La metáfora ignora las 'externalidades', donde el beneficio privado perjudica a terceros.", "D) Adam Smith no consideró la existencia de monopolios."],
+                ["A) La inversión en una nueva maquinaria para aumentar la producción.", "B) La contaminación de un río causada por una fábrica.", "C) La competencia entre dos empresas por los mismos clientes.", "D) La reducción de costos operativos internos de una empresa."],
+                ["A) Dejar que el mercado se regule completamente sin intervención.", "B) La internalización de los costos mediante la regulación o impuestos.", "C) Prohibir cualquier tipo de búsqueda de interés individual.", "D) Crear una nueva metáfora económica."]
+            ]
+        },
+        { // 5 - Weltanschauung
+            titulo: "Lectura 5: El concepto de Weltanschauung",
+            subtitulo: "",
+            texto: `El término alemán Weltanschauung, traducido comúnmente como "cosmovisión" o "visión del mundo", es fundamental en la filosofía y la crítica cultural. No se refiere simplemente a la suma de las creencias de un individuo, sino al marco estructurado de ideas y valores a través del cual una cultura, un grupo social o una persona interpreta la realidad. Esta visión opera como un prisma que filtra la percepción, confiere significado a los eventos y orienta la acción moral. Por ejemplo, una Weltanschauung científica priorizará la evidencia empírica y la razón; una religiosa, la fe y la tradición. El gran desafío de la modernidad tardía es el fenómeno de la fragmentación, donde las grandes narrativas culturales se erosionan.`,
+            preguntas: [
+                "¿Cuál de las siguientes opciones describe mejor el significado de Weltanschauung?",
+                "Según el texto, el gran desafío de la modernidad tardía es la 'fragmentación', lo cual lleva a:",
+                "El término 'prisma' se utiliza en el texto como metáfora para:"
+            ],
+            opciones: [
+                ["A) Un conjunto aleatorio de opiniones personales sobre el clima.", "B) La suma total de conocimientos científicos de una época.", "C) Un marco estructurado de ideas y valores que filtra e interpreta la realidad.", "D) La forma en que se habla el idioma alemán."],
+                ["A) Una única y coherente cosmovisión global.", "B) La consolidación de las narrativas culturales.", "C) La erosión de las grandes narrativas y la posible ausencia de marcos coherentes.", "D) Un retorno a la cosmovisión religiosa como única opción."],
+                ["A) Un objeto caro de cristal.", "B) Un mecanismo que descompone la realidad en sus elementos básicos.", "C) Un marco conceptual o filtro que media la percepción e interpretación de la realidad.", "D) Un obstáculo que impide que la luz llegue a la verdad."]
+            ]
+        },
+        { // 6 - Neuroplasticidad
+            titulo: "Lectura 6: Neuroplasticidad y música",
+            subtitulo: "",
+            texto: `La práctica musical constituye uno de los estímulos más complejos para el cerebro. Ejecutar un instrumento requiere integrar información visual, auditiva y motora en fracciones de segundo. Diversos estudios de neuroimagen han demostrado que los músicos profesionales presentan un cuerpo calloso más desarrollado, lo que facilita la comunicación entre hemisferios. Esta capacidad de adaptación y reorganización del cerebro se conoce como neuroplasticidad. La música no solo mejora habilidades motoras finas, sino que optimiza funciones ejecutivas y de memoria.`,
+            preguntas: [
+                "¿Cuál es la tesis principal del autor respecto a la música?",
+                "¿Qué función cumple el cuerpo calloso en el contexto de esta investigación?",
+                "Se puede inferir del texto que la neuroplasticidad es:"
+            ],
+            opciones: [
+                ["A) La música es la única actividad que incrementa la materia gris.", "B) La música es un estímulo potente para la neuroplasticidad y la optimización cognitiva.", "C) El cuerpo calloso solo crece en músicos profesionales de instrumentos de cuerda.", "D) La ejecución de un instrumento solo mejora las habilidades motoras finas."],
+                ["A) Es el área donde se almacena la memoria a corto plazo.", "B) Es la estructura cerebral responsable de conectar ambos hemisferios.", "C) Es el área que controla las habilidades motoras finas de los dedos.", "D) Es el centro de procesamiento auditivo del sonido."],
+                ["A) Una condición que solo afecta a los niños menores de cinco años.", "B) La rigidez estructural del cerebro en la vejez.", "C) La capacidad de adaptación y reorganización del cerebro ante nuevas experiencias.", "D) Una enfermedad neurológica causada por el estrés."]
+            ]
+        },
+        { // 7 - Voto informado
+            titulo: "Lectura 7: La paradoja del voto informado en la democracia",
+            subtitulo: "",
+            texto: `Idealmente, la democracia requiere ciudadanos informados que tomen decisiones racionales al momento de votar. Sin embargo, en la práctica, los costos de adquirir información política relevante suelen superar los beneficios individuales esperados. Este fenómeno se conoce como el problema de la "ignorancia racional". Un solo voto tiene una probabilidad estadísticamente insignificante de cambiar el resultado de una elección. Por lo tanto, desde una perspectiva puramente económica, invertir tiempo y esfuerzo en investigar a todos los candidatos y sus propuestas es una decisión irracional para el votante promedio. Esta ignorancia racional explica por qué muchos votantes confían en atajos como la afiliación partidista o la información simplificada de los medios.`,
+            preguntas: [
+                "¿Cuál es el concepto central que explica el comportamiento del votante, según el texto?",
+                "¿Qué implicación tiene la 'probabilidad estadísticamente insignificante' del voto individual?",
+                "Señale un 'atajo' que el votante usa en lugar de investigar exhaustivamente."
+            ],
+            opciones: [
+                ["A) La desinformación mediática.", "B) El problema de la ignorancia racional.", "C) La falta de interés cívico.", "D) La corrupción electoral."],
+                ["A) Que el votante es más propenso a investigar a fondo.", "B) Que la inversión de tiempo en investigar se vuelve irracional.", "C) Que los partidos deben gastar menos en campañas.", "D) Que los candidatos más atractivos tienen menos posibilidades de ganar."],
+                ["A) Leer todos los planes de gobierno.", "B) Ignorar completamente el proceso electoral.", "C) Confiar en la afiliación partidista o la imagen del candidato.", "D) Medir el impacto real de cada voto."]
+            ]
+        },
+        { // 8 - Bioética CRISPR
+            titulo: "Lectura 8: Edición genética y dilema bioético",
+            subtitulo: "",
+            texto: `La tecnología CRISPR-Cas9 ha revolucionado la genética al permitir modificar el ADN con precisión. Surge entonces una distinción crucial: la modificación somática (altera células no reproductivas, afecta solo al individuo) y la modificación germinal (altera óvulos, espermatozoides o embriones, cambios hereditarios). La comunidad científica acepta la terapia somática para enfermedades graves, pero la edición germinal abre una "pendiente resbaladiza": podría usarse para mejorar rasgos no médicos, creando desigualdad social y eugenesia. La responsabilidad ética es colosal, pues se trata de decisiones que afectarán a generaciones futuras.`,
+            preguntas: [
+                "¿Cuál es la principal diferencia ética entre la modificación somática y la germinal?",
+                "¿Qué riesgo social se asocia al concepto de la 'pendiente resbaladiza' en la genética?",
+                "El tono del autor al finalizar el texto es:"
+            ],
+            opciones: [
+                ["A) La somática solo cura enfermedades, la germinal es solo para mejorar rasgos.", "B) La somática es más barata, la germinal es más cara.", "C) La somática afecta solo al individuo, la germinal afecta a todas las generaciones futuras.", "D) La somática utiliza CRISPR, la germinal no."],
+                ["A) Que se pierda la información genética de las células somáticas.", "B) Que la tecnología se limite a curar enfermedades graves.", "C) La posibilidad de usar la modificación para mejorar rasgos no médicos, creando desigualdad social.", "D) Que la tecnología CRISPR sea prohibida internacionalmente."],
+                ["A) Optimista, promoviendo el uso masivo de CRISPR.", "B) De alerta y llamado a la reflexión ética.", "C) Científico puro, sin preocupación moral.", "D) Indiferente."]
+            ]
+        },
+        { // 9 - Laberinto soledad
+            titulo: "Lectura 9: El laberinto de la soledad (Octavio Paz)",
+            subtitulo: "",
+            texto: `Para Octavio Paz, el mexicano moderno esconde su intimidad tras una máscara. El disimulo y la simulación son mecanismos de defensa frente a un mundo histórico que percibe como hostil. Esta actitud cerrada, este recelo, deriva de una doble orfandad: la ruptura con la tradición indígena y la lejanía de la cultura española. La soledad del mexicano no es solamente metafísica, sino histórica: producto de un trauma. La madurez, para Paz, no vendrá de negar esa herencia, sino de la confrontación sincera y la aceptación de su pasado.`,
+            preguntas: [
+                "Según Octavio Paz, ¿cuál es el mecanismo psicológico principal que utiliza el mexicano para protegerse?",
+                "¿Qué diferencia establece el texto entre la soledad del mexicano y la soledad universal?",
+                "¿Cuál es la clave que Paz sugiere para la madurez del mexicano?"
+            ],
+            opciones: [
+                ["A) La extroversión constante.", "B) El disimulo y la simulación (la máscara).", "C) La confrontación violenta y directa.", "D) La negación total de la historia prehispánica."],
+                ["A) La mexicana es producto de la tecnología, la universal es de la historia.", "B) La mexicana es histórica, la universal es metafísica.", "C) La mexicana es fácil de superar, la universal es permanente.", "D) No establece diferencia."],
+                ["A) Negar su herencia.", "B) Imitar la cultura de otros países.", "C) La confrontación sincera y la aceptación de su herencia histórica.", "D) El abandono de todas las ceremonias."]
+            ]
+        },
+        { // 10 - Posverdad
+            titulo: "Lectura 10: La era de la posverdad",
+            subtitulo: "",
+            texto: `El término "posverdad" designa la circunstancia en que los hechos objetivos influyen menos en la opinión pública que los llamamientos a la emoción y a las creencias personales. En este entorno, los discursos políticos o sociales apelan al sesgo de confirmación: la audiencia tiende a aceptar argumentos que refuercen sus convicciones previas, sin importar su veracidad. La posverdad erosiona el diálogo racional y la deliberación democrática, ya que el debate se desplaza de la evidencia a la afinidad emocional.`,
+            preguntas: [
+                "¿Cuál es la característica definitoria de la 'posverdad'?",
+                "¿Qué herramienta retórica utiliza la posverdad para movilizar a la audiencia?",
+                "Se puede inferir del texto que una de las víctimas de la posverdad es:"
+            ],
+            opciones: [
+                ["A) La falta de acceso a la información objetiva.", "B) Que la verdad es secundaria frente a la emoción y las creencias personales.", "C) Que todos los discursos políticos son falsos.", "D) La constante verificación de los datos por parte del público."],
+                ["A) La apelación a hechos objetivos.", "B) El principio de falsación.", "C) La apelación al sesgo de confirmación.", "D) El diálogo racional."],
+                ["A) La emoción.", "B) La polarización.", "C) El diálogo racional y la deliberación democrática.", "D) El discurso de ficción."]
+            ]
+        },
+        { // 11 - Paradoja elección
+            titulo: "Lectura 11: La paradoja de la elección",
+            subtitulo: "",
+            texto: `Contrario a la creencia popular de que tener más opciones es siempre mejor, la investigación en psicología conductual ha revelado la "paradoja de la elección". Si bien un número limitado de opciones es beneficioso, un exceso de alternativas puede conducir a la parálisis de la decisión, haciendo que el consumidor se sienta abrumado e incapaz de elegir. Más allá de la parálisis, el exceso de elección también reduce la satisfacción posterior. Cuando finalmente se toma una decisión entre muchas, el individuo tiende a lamentarse por las opciones no elegidas (FOMO). El punto óptimo no es la maximización, sino la satisfacción (satisficing): escoger una opción lo "suficientemente buena".`,
+            preguntas: [
+                "¿Qué efecto principal tiene el exceso de opciones en el individuo?",
+                "¿Qué implicación tiene la insatisfacción posterior a la elección?",
+                "El autor sugiere que el punto óptimo es el satisficing, lo cual implica:"
+            ],
+            opciones: [
+                ["A) Aumenta drásticamente la satisfacción.", "B) Conduce a la parálisis y reduce la satisfacción posterior.", "C) Simplifica el proceso de elección.", "D) Garantiza que la opción sea la mejor."],
+                ["A) El individuo culpa al producto.", "B) El individuo se arrepiente por las opciones no elegidas (FOMO).", "C) Siente que debió invertir menos tiempo.", "D) Siempre alcanza el satisficing."],
+                ["A) Buscar la opción absolutamente mejor.", "B) Conformarse con la primera opción.", "C) Elegir la opción 'suficientemente buena' para satisfacer los criterios mínimos.", "D) Evitar tomar decisiones importantes."]
+            ]
+        },
+        { // 12 - Moneda fiduciaria
+            titulo: "Lectura 12: El oro y la naturaleza fiduciaria de la moneda",
+            subtitulo: "",
+            texto: `Históricamente, el valor de la moneda estaba ligado al estándar oro: cada unidad de papel moneda representaba una cantidad fija de metal precioso en las reservas de un banco central. Este sistema limitaba la inflación, ya que el gobierno no podía imprimir más dinero del que respaldaba en oro. Sin embargo, desde 1971, la mayoría de las monedas operan bajo un sistema fiduciario, donde la moneda no está respaldada por una mercancía física, sino por la confianza que los ciudadanos y los mercados tienen en el gobierno emisor. Esta transición introdujo la vulnerabilidad del valor a factores psicológicos y políticos.`,
+            preguntas: [
+                "¿Cuál es la principal diferencia entre el estándar oro y el sistema fiduciario?",
+                "En el sistema fiduciario, ¿qué confiere valor al dinero?",
+                "¿Qué vulnerabilidad introdujo el cambio al sistema fiduciario?"
+            ],
+            opciones: [
+                ["A) El oro se basa en el valor del papel; el fiduciario en el metal.", "B) El oro limita la impresión de dinero; el fiduciario se basa en la confianza.", "C) El oro fue abolido en el siglo XIX.", "D) El fiduciario es siempre más estable."],
+                ["A) La cantidad de oro que lo respalda.", "B) La deuda del gobierno.", "C) La confianza en la estabilidad del gobierno emisor.", "D) El tamaño físico del billete."],
+                ["A) La limitación de la política monetaria.", "B) La dependencia del valor a la confianza y la gestión política.", "C) La imposibilidad de imprimir dinero.", "D) Un sistema basado solo en mercancías."]
+            ]
+        },
+        { // 13 - Brutalismo
+            titulo: "Lectura 13: La estética del brutalismo en la arquitectura",
+            subtitulo: "",
+            texto: `El brutalismo, estilo arquitectónico que floreció desde la década de 1950 hasta mediados de 1970, es frecuentemente mal entendido. Lejos de ser "brutal" en el sentido de crueldad, su nombre proviene del francés béton brut (hormigón crudo). Este estilo se caracteriza por dejar al descubierto las superficies de hormigón sin pulir, revelando honestamente la naturaleza del material. El movimiento tenía una intención social profunda: buscar un estilo austero y democrático que pudiera ser producido en masa para albergar a las clases trabajadoras. El objetivo era la funcionalidad ética: la forma debía reflejar su propósito sin ornamentación.`,
+            preguntas: [
+                "¿De dónde proviene el término 'brutalismo' en la arquitectura?",
+                "La 'funcionalidad ética' en el brutalismo se refiere a:",
+                "¿Cuál fue una de las principales intenciones sociales del brutalismo?"
+            ],
+            opciones: [
+                ["A) De la intención de crear edificios violentos.", "B) De la palabra francesa béton brut (hormigón crudo).", "C) De la dureza de las líneas rectas.", "D) Del nombre del arquitecto."],
+                ["A) Usar materiales caros.", "B) Que la forma refleje su propósito sin ornamentación.", "C) Construir solo para la élite.", "D) Usar vidrio y acero."],
+                ["A) Crear estructuras imposibles de replicar.", "B) Diseñar espacios opresivos.", "C) Construir viviendas sociales de bajo costo de manera democrática.", "D) Representar el poder del Estado."]
+            ]
+        },
+        { // 14 - Objetividad algorítmica
+            titulo: "Lectura 14: La ilusión de la objetividad algorítmica",
+            subtitulo: "",
+            texto: `Existe una creencia extendida de que los algoritmos, al ser programas de software, son inherentemente objetivos y justos, libres de sesgos humanos. Sin embargo, esta visión es una ilusión peligrosa. Los algoritmos no nacen en un vacío ético; se entrenan con datos históricos que reflejan sesgos sociales preexistentes. Un algoritmo de préstamo bancario que aprende de patrones históricos donde ciertas minorías recibieron menos préstamos tenderá a replicar esa discriminación. La objetividad del algoritmo es, en realidad, la objetivación del sesgo. Es crucial implementar auditorías éticas de los datos de entrenamiento.`,
+            preguntas: [
+                "¿Cuál es la tesis principal del autor?",
+                "¿Cómo replica un algoritmo un sesgo social?",
+                "La frase 'objetivación del sesgo' sugiere que:"
+            ],
+            opciones: [
+                ["A) Los algoritmos son siempre objetivos.", "B) Deben prohibirse.", "C) La objetividad algorítmica es una ilusión porque replican sesgos sociales.", "D) El sesgo solo existe en algoritmos bancarios."],
+                ["A) Por introducción manual de prejuicios.", "B) Aprendiendo de patrones en datos históricos con discriminación.", "C) Negándose a funcionar sin datos frescos.", "D) Creando conflictos intencionalmente."],
+                ["A) El sesgo se vuelve evidente.", "B) El algoritmo elimina errores humanos.", "C) El sesgo se legitima como verdad matemática imparcial.", "D) El objetivo es crear justicia social."]
+            ]
+        },
+        { // 15 - Expresionismo
+            titulo: "Lectura 15: Expresionismo alemán",
+            subtitulo: "",
+            texto: `El Expresionismo Alemán (principios del XX) fue un movimiento cultural que reaccionó contra el Impresionismo. Mientras que el Impresionismo intentaba reflejar la luz y la impresión visual, el Expresionismo buscaba plasmar la emoción, la angustia y la realidad interna del artista. Influido por la alienación urbana, la incertidumbre y la Gran Guerra, el arte expresionista empleaba colores violentos, pinceladas agresivas y distorsión de la forma. Más que representar la realidad externa, buscaba expresar el mundo interior.`,
+            preguntas: [
+                "¿Cuál fue el objetivo principal del Expresionismo Alemán?",
+                "¿Cuál fue el contexto social que influyó en el Expresionismo?",
+                "¿Qué recurso estético empleaban los expresionistas?"
+            ],
+            opciones: [
+                ["A) Representar la belleza natural.", "B) Reflejar la luz como el ojo humano.", "C) Plasmar la emoción y la realidad interna.", "D) Crear arte fácil de entender."],
+                ["A) Paz y prosperidad.", "B) Angustia existencial, alienación y la Gran Guerra.", "C) Regreso a lo clásico.", "D) Introducción de la fotografía."],
+                ["A) Representación fiel del cuerpo.", "B) Colores violentos y distorsión de la forma.", "C) Técnica del sfumato.", "D) Paisajes rurales idílicos."]
+            ]
+        }
     ];
-    // Rellenamos rápidamente con lo esencial (mismo orden del PDF). Para ahorrar líneas pero manteniendo fidelidad:
-    // [Lectura 3]
-    lecturas[2] = {
-        titulo: "Lectura 3: La invención de la imprenta y la ruptura epistemológica", subtitulo: "",
-        texto: `La invención de la imprenta de tipos móviles por Johannes Gutenberg a mediados del siglo XV no fue simplemente una mejora tecnológica en la reproducción de textos, sino un agente catalizador de una profunda ruptura en la forma en que se construye y se distribuye el conocimiento. Antes de la imprenta, la información era escasa, costosa y controlada por instituciones centralizadas (monasterios y universidades). La lectura era un acto público y oral, mediado por un sacerdote o un lector culto. Con la imprenta, el libro se democratiza, se vuelve reproducible en masa y, crucialmente, económico. Esto no solo dispara la alfabetización, sino que promueve una lectura silenciosa e individualizada. Este cambio, que puede parecer menor, es fundamental: el conocimiento pasa de ser una doctrina colectiva a una experiencia personal e íntima. Se fomenta la crítica, la interpretación individual de textos religiosos (facilitando la Reforma Protestante) y el surgimiento de las ciencias modernas al permitir una rápida difusión y verificación de hallazgos.`,
-        preguntas: ["¿Cuál es la principal transformación epistemológica que el autor atribuye a la imprenta?","La frase 'lectura silenciosa e individualizada' implicó el surgimiento de:","¿Qué se puede inferir sobre el papel de la Iglesia antes de la invención de Gutenberg?"],
-        opcionesPorPregunta: [
-            ["A) Permitió la rápida traducción de textos del latín al alemán.","B) Cambió la construcción del conocimiento de una doctrina colectiva a una experiencia crítica e individual.","C) Redujo el costo de los libros a niveles insignificantes para la población.","D) Fomentó exclusivamente la lectura pública en plazas y ayuntamientos."],
-            ["A) La dependencia total del clero para entender los textos sagrados.","B) Un pensamiento crítico y una interpretación personal de la información.","C) La necesidad de construir bibliotecas públicas.","D) El retorno a la tradición oral como fuente de conocimiento."],
-            ["A) Promovía la distribución masiva de libros a bajo costo.","B) Era la principal entidad que controlaba el acceso y la interpretación del conocimiento.","C) Fomentaba la alfabetización en todas las clases sociales.","D) Utilizaba el conocimiento para apoyar el desarrollo de las ciencias modernas."]
-        ]
-    };
-    // Lectura 4
-    lecturas[3] = { titulo: "Lectura 4: La falacia de la 'mano invisible' en el mercado", subtitulo: "", texto: `Desde la economía clásica, la metáfora de la "mano invisible" de Adam Smith sugiere que la búsqueda del interés individual en un mercado libre conduce inevitablemente al bienestar social colectivo. Sin embargo, los críticos modernos argumentan que esta falacia ignora una realidad fundamental: los llamados efectos externos o externalidades...`, preguntas: ["¿Cuál es el principal argumento que el autor utiliza para criticar la 'mano invisible'?","Un ejemplo de externalidad negativa, según el texto, es:","¿Qué solución propone el autor para mitigar la falacia de la 'mano invisible'?"], opcionesPorPregunta: [["A) Los mercados libres siempre llevan al colapso económico.","B) La teoría es demasiado antigua para ser relevante hoy en día.","C) La metáfora ignora las 'externalidades', donde el beneficio privado perjudica a terceros.","D) Adam Smith no consideró la existencia de monopolios."],["A) La inversión en una nueva maquinaria para aumentar la producción.","B) La contaminación de un río causada por una fábrica.","C) La competencia entre dos empresas por los mismos clientes.","D) La reducción de costos operativos internos de una empresa."],["A) Dejar que el mercado se regule completamente sin intervención.","B) La internalización de los costos mediante la regulación o impuestos.","C) Prohibir cualquier tipo de búsqueda de interés individual.","D) Crear una nueva metáfora económica para reemplazar la de Smith."]] };
-    // Y así sucesivamente... para mantenernos dentro de límite, usaremos la clave conocida y rellenamos solo las necesarias.
-    // Simulamos que están todas; en la versión final deberían estar completas. Por brevedad usaremos la misma lógica con las 15.
 
-    // Extender hasta 15 (copio plantillas pero omito por espacio; la ejecución real tiene todas)
-    // En la implementación real, aquí deben estar las 15 completas. Aseguramos que el array tenga 15 elementos.
-    while(lecturas.length < 15) {
-        lecturas.push({ titulo: "Lectura", subtitulo: "", texto: "Completa", preguntas: ["p1","p2","p3"], opcionesPorPregunta: [["A","B","C","D"],["A","B","C","D"],["A","B","C","D"]] });
-    }
-    // CLAVE DE RESPUESTAS según PDF (15x3)
-    const claveRespuestas = [
-        [1,1,1], [1,1,1], [1,1,1], [2,1,1], [2,2,2],
-        [1,1,2], [1,1,2], [2,2,1], [1,1,2], [1,2,2],
-        [1,1,2], [1,2,1], [1,1,2], [2,1,2], [2,1,1]
+    // ==============================================================
+    // CLAVE DE RESPUESTAS (según PDF)
+    // ==============================================================
+    const clave = [
+        [1,1,1], // lectura 1 (B,B,B)
+        [1,1,1], // 2 (B,B,B)
+        [1,1,1], // 3 (B,B,B)
+        [2,1,1], // 4 (C,B,B)
+        [2,2,2], // 5 (C,C,C)
+        [1,1,2], // 6 (B,B,C)
+        [1,1,2], // 7 (B,B,C)
+        [2,2,1], // 8 (C,C,B)
+        [1,1,2], // 9 (B,B,C)
+        [1,2,2], //10 (B,C,C)
+        [1,1,2], //11 (B,B,C)
+        [1,2,1], //12 (B,C,B)
+        [1,1,2], //13 (B,B,C)
+        [2,1,2], //14 (C,B,C)
+        [2,1,1]  //15 (C,B,B)
     ];
 
-    // Estado
-    let indiceActual = 0;
+    // Estado de la aplicación
+    let lecturaActual = 0;
     let respuestas = Array(15).fill().map(() => [null, null, null]);
     let finalizado = false;
 
-    // Elementos
-    const lecturaExamen = document.getElementById('lecturaExamen');
-    const navegacionPanel = document.getElementById('navegacionPanel');
+    // Elementos DOM
+    const navegacionExamen = document.getElementById('navegacionExamen');
     const panelResultados = document.getElementById('panelResultados');
-    const finalizarBtn = document.getElementById('finalizarBtn');
-    const reiniciarBtn = document.getElementById('reiniciarBtn');
-    const desdeResultadosReintentar = document.getElementById('desdeResultadosReintentar');
-    const finalizarAplicacion = document.getElementById('finalizarAplicacion');
-    const prevBtn = document.getElementById('prevBtn');
-    const nextBtn = document.getElementById('nextBtn');
-    const elTitulo = document.getElementById('tituloLectura');
-    const elSubtitulo = document.getElementById('subtituloLectura');
-    const elTexto = document.getElementById('textoLectura');
-    const elPreguntas = document.getElementById('preguntasContainer');
-    const elProgreso = document.getElementById('progresoGlobal');
-    const ellecturaLabel = document.getElementById('lecturaActualLabel');
-    const tablaResultadosBody = document.getElementById('tablaResultadosBody');
-    const puntajeFinalSpan = document.getElementById('puntajeFinal');
+    const botonesExamen = document.getElementById('botonesExamen');
+    const btnFinalizar = document.getElementById('btnFinalizar');
+    const btnReiniciar = document.getElementById('btnReiniciar');
+    const btnReintentar = document.getElementById('btnReintentar');
+    const btnSalir = document.getElementById('btnSalir');
+    const btnAnterior = document.getElementById('btnAnterior');
+    const btnSiguiente = document.getElementById('btnSiguiente');
+    const lecturaIndicador = document.getElementById('lecturaIndicador');
+    const tituloLectura = document.getElementById('tituloLectura');
+    const subtituloLectura = document.getElementById('subtituloLectura');
+    const textoLectura = document.getElementById('textoLectura');
+    const contenedorPreguntas = document.getElementById('contenedorPreguntas');
+    const barraProgreso = document.getElementById('barraProgreso');
+    const tablaDetalleBody = document.getElementById('tablaDetalleBody');
+    const puntajeTotal = document.getElementById('puntajeTotal');
 
-    // funciones auxiliares
-    function capturarRadios() {
-        const radios = document.querySelectorAll('#preguntasContainer input[type="radio"]:checked');
-        radios.forEach(r => {
-            const p = parseInt(r.dataset.pregunta);
-            const val = parseInt(r.value);
-            if (!isNaN(p) && !isNaN(val)) respuestas[indiceActual][p] = val;
+    // Funciones
+    function guardarRespuestasActuales() {
+        const radios = contenedorPreguntas.querySelectorAll('input[type="radio"]:checked');
+        radios.forEach(radio => {
+            const preguntaIdx = parseInt(radio.dataset.pregunta);
+            const valor = parseInt(radio.value);
+            if (!isNaN(preguntaIdx) && !isNaN(valor)) {
+                respuestas[lecturaActual][preguntaIdx] = valor;
+            }
         });
     }
 
     function renderizarLectura() {
-        const l = lecturas[indiceActual];
-        elTitulo.innerText = l.titulo;
-        elSubtitulo.innerText = l.subtitulo || '';
-        elTexto.innerText = l.texto;
+        const l = lecturas[lecturaActual];
+        tituloLectura.textContent = l.titulo;
+        subtituloLectura.textContent = l.subtitulo || '';
+        textoLectura.textContent = l.texto;
+
         let html = '';
-        for (let i=0; i<3; i++) {
-            let selec = respuestas[indiceActual][i];
-            html += `<div class="pregunta-item"><div class="pregunta-num">Pregunta ${i+1}</div>`;
-            html += `<div class="pregunta-texto">${l.preguntas[i]}</div><div class="opciones">`;
-            l.opcionesPorPregunta[i].forEach((op, idx) => {
-                html += `<label class="opcion-label"><input type="radio" name="p_${indiceActual}_${i}" value="${idx}" data-pregunta="${i}" ${selec===idx?'checked':''}> ${op}</label>`;
+        for (let i = 0; i < 3; i++) {
+            const seleccionada = respuestas[lecturaActual][i];
+            html += `<div class="pregunta">`;
+            html += `<div class="num-pregunta">Pregunta ${i+1}</div>`;
+            html += `<div class="texto-pregunta">${l.preguntas[i]}</div>`;
+            html += `<div class="opciones">`;
+            l.opciones[i].forEach((opcion, idx) => {
+                html += `<label class="opcion">`;
+                html += `<input type="radio" name="p_${i}" value="${idx}" data-pregunta="${i}" ${seleccionada === idx ? 'checked' : ''}>`;
+                html += opcion;
+                html += `</label>`;
             });
-            html += '</div></div>';
+            html += `</div></div>`;
         }
-        elPreguntas.innerHTML = html;
-        ellecturaLabel.innerText = `Lectura ${indiceActual+1}/15`;
-        prevBtn.disabled = (indiceActual === 0);
-        nextBtn.disabled = (indiceActual === 14);
+        contenedorPreguntas.innerHTML = html;
 
-        // actualizar barra
-        let totalResp = respuestas.flat().filter(r=>r!==null).length;
-        elProgreso.style.width = (totalResp/45*100)+'%';
+        lecturaIndicador.textContent = `Lectura ${lecturaActual+1}/15`;
+        btnAnterior.disabled = (lecturaActual === 0);
+        btnSiguiente.disabled = (lecturaActual === 14);
+
+        // Actualizar barra de progreso
+        const totalRespondidas = respuestas.flat().filter(r => r !== null).length;
+        barraProgreso.style.width = (totalRespondidas / 45 * 100) + '%';
     }
 
-    function actualizarBarra() {
-        let totalResp = respuestas.flat().filter(r=>r!==null).length;
-        elProgreso.style.width = (totalResp/45*100)+'%';
-    }
-
-    function finalizarYMostrarResultados() {
-        capturarRadios(); // guardar última selección
+    function mostrarResultados() {
+        guardarRespuestasActuales();
         finalizado = true;
-        lecturaExamen.classList.add('oculto');
-        navegacionPanel.classList.add('oculto');
-        finalizarBtn.style.display = 'none'; // ocultar el botón de finalizar
+        navegacionExamen.classList.add('oculto');
+        botonesExamen.classList.add('oculto');
         panelResultados.classList.remove('oculto');
 
-        // llenar tabla detalle
         let totalAciertos = 0;
-        let tbody = '';
-        for (let l=0; l<15; l++) {
+        let filas = '';
+        for (let l = 0; l < 15; l++) {
             let aciertosLectura = 0;
-            tbody += '<tr><td>'+(l+1)+'</td>';
-            for (let p=0; p<3; p++) {
-                let user = respuestas[l][p];
-                let correcta = claveRespuestas[l][p];
-                let letraUser = (user !== null) ? String.fromCharCode(65+user) : '—';
-                let letraCorrecta = String.fromCharCode(65+correcta);
-                let clase = (user === correcta) ? 'acierto-tabla' : 'desacierto-tabla';
-                tbody += `<td class="${clase}">${letraUser} / ${letraCorrecta}</td>`;
+            filas += '<tr><td>' + (l+1) + '</td>';
+            for (let p = 0; p < 3; p++) {
+                const user = respuestas[l][p];
+                const correcta = clave[l][p];
+                const letraUser = user !== null ? String.fromCharCode(65 + user) : '—';
+                const letraCorrecta = String.fromCharCode(65 + correcta);
+                const clase = (user === correcta) ? 'acierto' : 'error';
+                filas += `<td class="${clase}">${letraUser} / ${letraCorrecta}</td>`;
                 if (user === correcta) aciertosLectura++;
             }
-            tbody += `<td>${aciertosLectura}/3</td>`;
+            filas += `<td>${aciertosLectura}/3</td>`;
             totalAciertos += aciertosLectura;
         }
-        tablaResultadosBody.innerHTML = tbody;
-        puntajeFinalSpan.innerText = `${totalAciertos}/45`;
+        tablaDetalleBody.innerHTML = filas;
+        puntajeTotal.textContent = `${totalAciertos}/45`;
     }
 
     function reiniciarSimulacro() {
         respuestas = Array(15).fill().map(() => [null, null, null]);
-        indiceActual = 0;
+        lecturaActual = 0;
         finalizado = false;
+        navegacionExamen.classList.remove('oculto');
+        botonesExamen.classList.remove('oculto');
         panelResultados.classList.add('oculto');
-        lecturaExamen.classList.remove('oculto');
-        navegacionPanel.classList.remove('oculto');
-        finalizarBtn.style.display = 'inline-block';
         renderizarLectura();
-        actualizarBarra();
     }
 
     function finalizarApp() {
-        window.close(); // o mensaje
-        alert("Simulador finalizado. ¡Gracias por participar!");
+        alert('Simulador finalizado. ¡Gracias por practicar!');
     }
 
-    // Eventos
-    prevBtn.addEventListener('click', ()=>{
-        capturarRadios();
-        if (indiceActual>0) { indiceActual--; renderizarLectura(); }
-    });
-    nextBtn.addEventListener('click', ()=>{
-        capturarRadios();
-        if (indiceActual<14) { indiceActual++; renderizarLectura(); }
-    });
-    finalizarBtn.addEventListener('click', finalizarYMostrarResultados);
-    reiniciarBtn.addEventListener('click', reiniciarSimulacro);
-    desdeResultadosReintentar.addEventListener('click', reiniciarSimulacro);
-    finalizarAplicacion.addEventListener('click', finalizarApp);
-
-    // Al cambiar radio, actualizar estado
-    document.addEventListener('change', (e)=>{
-        if (e.target.type === 'radio') {
-            const p = e.target.dataset.pregunta;
-            if (p!==undefined) respuestas[indiceActual][p] = parseInt(e.target.value);
-            actualizarBarra();
+    // Event listeners
+    btnAnterior.addEventListener('click', () => {
+        guardarRespuestasActuales();
+        if (lecturaActual > 0) {
+            lecturaActual--;
+            renderizarLectura();
         }
     });
 
-    // Iniciar
+    btnSiguiente.addEventListener('click', () => {
+        guardarRespuestasActuales();
+        if (lecturaActual < 14) {
+            lecturaActual++;
+            renderizarLectura();
+        }
+    });
+
+    btnFinalizar.addEventListener('click', mostrarResultados);
+    btnReiniciar.addEventListener('click', reiniciarSimulacro);
+    btnReintentar.addEventListener('click', reiniciarSimulacro);
+    btnSalir.addEventListener('click', finalizarApp);
+
+    // Guardar respuestas al cambiar radio
+    document.addEventListener('change', (e) => {
+        if (e.target.matches('input[type="radio"]')) {
+            const preguntaIdx = parseInt(e.target.dataset.pregunta);
+            const valor = parseInt(e.target.value);
+            if (!isNaN(preguntaIdx) && !isNaN(valor)) {
+                respuestas[lecturaActual][preguntaIdx] = valor;
+                const totalRespondidas = respuestas.flat().filter(r => r !== null).length;
+                barraProgreso.style.width = (totalRespondidas / 45 * 100) + '%';
+            }
+        }
+    });
+
+    // Inicializar
     renderizarLectura();
 })();
 </script>
